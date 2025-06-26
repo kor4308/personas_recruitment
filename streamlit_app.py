@@ -133,4 +133,4 @@ def main():
         st.error("\n".join(avoider_messages))
 
 if __name__ == "__main__":
-    main(
+    main()

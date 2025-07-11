@@ -115,10 +115,6 @@ with col1:
 with col2:
     st.markdown(f"**Demographic targets for {disease}**")
     st.caption("These demographic targets are not validated.")
-    if disease == "Schizophrenia":
-        st.caption("These demographic targets are not validated.")
-    if disease == "Schizophrenia":
-        st.caption("These demographic targets are not validated.")
     race_target = {}
     total_race = 0
     for key, value in target["Race"].items():

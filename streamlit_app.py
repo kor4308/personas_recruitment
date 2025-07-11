@@ -51,6 +51,8 @@ therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Other"])
 
 # --- Recruitment Motivators Section ---
+st.markdown("---")
+st.header("General Recruitment Motivators")
 st.header("General Recruitment Motivators")
 if disease == "Alzheimer's":
     col1, col2 = st.columns(2)
@@ -71,6 +73,7 @@ elif disease == "Bipolar Disorder":
         st.markdown("- Stigma → Partner with mental health advocacy orgs to reduce fear and misinformation\n- Medication concerns → Clearly explain risks and benefits during informed consent\n- Time & Life disruption → Offer flexible scheduling, virtual participation\n- Trust in research → Use transparency and patient testimonials")
         st.caption("Note: These are not informed recommendations specific to bipolar disorder, but general possibilities.")
 
+st.markdown("---")
 st.header("Specific Persona Recruitment")
 
 if disease == "Alzheimer's":

@@ -113,9 +113,7 @@ with col3:
         st.markdown(f"<span style='color:green'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
 
     
-    race_diffs_neg = [(key, race_target[key] - race_census[key]) for key in race_census if race_target[key] - race_census[key] < 0]
-    for key, diff in sorted(race_diffs_neg, key=lambda x: diff):
-        st.markdown(f"<span style='color:red'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
+    
 
 
 
@@ -148,14 +146,18 @@ st.header("Specific Persona Recruitment")
 if disease == "Alzheimer's":
     st.subheader("Targeted Strategies for Underrepresented Groups")
 
-    # Gender-based strategy example (optional expansion)
-    for key, diff in gender_diffs:
-        if key == "Female":
-            st.markdown("**Female:** Enhance outreach through caregiver networks and early detection education.")
-        elif key == "Male":
-            st.markdown("**Male:** Address stigma and increase awareness around cognitive screening.")
+    # Combine and sort all demographic diffs by size
+    combined_diffs = gender_diffs + race_diffs_pos
+    combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])
 
-    # Race-based strategies
+        for key, diff in combined_diffs_sorted:
+        if key == "Female":
+            st.markdown("**Female:**")
+            st.markdown("- Connect with research registries and women’s health organizations.")
+            st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
+        elif key == "Male":
+            st.markdown("**Male:**")
+            st.markdown("- Address stigma and increase awareness around cognitive screening.")
     for key, diff in race_diffs_pos:
         if key == "Black, NH":
             st.markdown("**Black, NH:**")

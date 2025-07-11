@@ -150,7 +150,7 @@ if disease == "Alzheimer's":
     combined_diffs = gender_diffs + race_diffs_pos
     combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])
 
-        for key, diff in combined_diffs_sorted:
+    for key, diff in combined_diffs_sorted:
         if key == "Female":
             st.markdown("**Female:**")
             st.markdown("- Connect with research registries and women’s health organizations.")

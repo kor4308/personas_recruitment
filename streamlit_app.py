@@ -136,6 +136,7 @@ elif disease == "Bipolar Disorder":
 # --- Strategy Recommendations ---
 st.markdown("---")
 st.header(f"Strategy Recommendations For {disease}")
+st.caption("🔻 Ordered by largest to smallest gap")
 if disease == "Alzheimer's":
     combined_diffs = gender_diffs + race_diffs_pos
     combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])

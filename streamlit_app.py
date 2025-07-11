@@ -43,12 +43,15 @@ BIPOLAR_TARGET = {
     }
 }
 
-# --- Sidebar Selections ---
+# --- Title ---
 st.title("🎯 US vs Target Demographic Comparator")
-col1, col2, col3 = st.columns([1, 1, 1])
 
+# --- Dropdowns ---
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Other"])
+
+# --- Column Layout ---
+col1, col2, col3 = st.columns([1, 1, 1])
 
 # --- Determine Target ---
 if disease == "Alzheimer's":
@@ -71,7 +74,7 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
-    st.markdown(f"**Target: {disease}**")
+    st.markdown(f"**Gender targets for {disease}**")
     gender_target = {}
     total_gender = 0
     for key, value in target["Gender"].items():
@@ -81,10 +84,11 @@ with col2:
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
 with col3:
-    st.markdown("**Difference**")
+    st.markdown("**Populations needing increased recruitment focus**")
     for key in gender_census:
         diff = gender_target[key] - gender_census[key]
-        st.text(f"{key}: {diff:+.1f}%")
+        if diff > 0:
+            st.markdown(f"<span style='color:green'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
 
 # --- Race Section ---
 st.subheader("Race Comparison")
@@ -95,7 +99,7 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
-    st.markdown(f"**Target: {disease}**")
+    st.markdown(f"**Demographic targets for {disease}**")
     race_target = {}
     total_race = 0
     for key, value in target["Race"].items():
@@ -105,7 +109,14 @@ with col2:
     st.markdown(f"**Total: {total_race:.1f}%**")
 
 with col3:
-    st.markdown("**Difference**")
+    st.markdown("**Populations needing increased recruitment focus**")
     for key in race_census:
         diff = race_target[key] - race_census[key]
-        st.text(f"{key}: {diff:+.1f}%")
+        if diff > 0:
+            st.markdown(f"<span style='color:green'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
+
+    st.markdown("**Other populations**")
+    for key in race_census:
+        diff = race_target[key] - race_census[key]
+        if diff < 0:
+            st.markdown(f"<span style='color:red'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)

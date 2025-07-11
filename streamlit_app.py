@@ -40,16 +40,6 @@ ALZHEIMERS_TARGET = {
         "NHPI, NH": 0.3,
         "Other": 0.9
     }
-}
-    "Race": {
-        "Hispanic": 21.2,
-        "White, NH": 51.7,
-        "Black, NH": 19.2,
-        "Asian, NH": 5.9,
-        "AIAN, NH": 0.8,
-        "NHPI, NH": 0.3,
-        "Other": 0.9  # Adjusted to make total 100.0
-    }
 },
     "Race": {
         "Hispanic": 21.2,

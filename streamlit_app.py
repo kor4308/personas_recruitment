@@ -112,12 +112,6 @@ with col3:
     for key, diff in sorted(race_diffs_pos, key=lambda x: -x[1]):
         st.markdown(f"<span style='color:green'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
 
-    
-    
-
-
-
-
 # --- Recruitment Motivators Section ---
 st.markdown("---")
 st.header("General Recruitment Motivators")
@@ -139,14 +133,10 @@ elif disease == "Bipolar Disorder":
         st.markdown("<span style='color:red'>●</span> Stigma → Partner with mental health advocacy orgs to reduce fear and misinformation<br><span style='color:red'>●</span> Medication concerns → Clearly explain risks and benefits during informed consent<br><span style='color:red'>●</span> Time & Life disruption → Offer flexible scheduling, virtual participation<br><span style='color:red'>●</span> Trust in research → Use transparency and patient testimonials", unsafe_allow_html=True)
         st.caption("Note: These are not informed recommendations specific to bipolar disorder, but general possibilities.")
 
+# --- Strategy Recommendations ---
 st.markdown("---")
-st.header("Specific Persona Recruitment")
-
-# Only display strategies for groups needing focus
+st.header(f"Strategy Recommendations For {disease}")
 if disease == "Alzheimer's":
-    st.header(f"Strategy Recommendations For {disease}")
-
-    # Combine and sort all demographic diffs by size
     combined_diffs = gender_diffs + race_diffs_pos
     combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])
 
@@ -181,11 +171,4 @@ if disease == "Alzheimer's":
         elif key == "Other":
             st.markdown("**Other:**")
             st.markdown("- Apply personalized outreach through local community and faith groups.")
-            st.markdown("- Translate materials and provide multilingual staff if needed.")        if key == "Female":
-            st.markdown("**Female:**")
-            st.markdown("- Connect with research registries and women’s health organizations.")
-            st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
-        elif key == "Male":
-            st.markdown("**Male:**")
-            st.markdown("- Address stigma and increase awareness around cognitive screening.")
-    
+            st.markdown("- Translate materials and provide multilingual staff if needed.")

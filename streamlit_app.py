@@ -60,7 +60,7 @@ else:
 
 # --- Functions ---
 def adjustable_input(label, default):
-    return st.number_input(label, min_value=0.0, max_value=100.0, value=default, step=0.1, key=label)
+    return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=label)
 
 # --- Gender Section ---
 st.subheader("Gender Comparison")

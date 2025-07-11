@@ -143,3 +143,41 @@ elif disease == "Bipolar Disorder":
 
 st.markdown("---")
 st.header("Specific Persona Recruitment")
+
+# Only display strategies for groups needing focus
+if disease == "Alzheimer's":
+    st.subheader("Targeted Strategies for Underrepresented Groups")
+
+    # Gender-based strategy example (optional expansion)
+    for key, diff in gender_diffs:
+        if key == "Female":
+            st.markdown("**Female:** Enhance outreach through caregiver networks and early detection education.")
+        elif key == "Male":
+            st.markdown("**Male:** Address stigma and increase awareness around cognitive screening.")
+
+    # Race-based strategies
+    for key, diff in race_diffs_pos:
+        if key == "Black, NH":
+            st.markdown("**Black, NH:**")
+            st.markdown("- Reassess use of CDR screening and logical memory scoring to improve inclusivity.")
+            st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
+        elif key == "Hispanic":
+            st.markdown("**Hispanic:**")
+            st.markdown("- Reassess MMSE and logical memory scoring as these can be barriers.")
+            st.markdown("- Provide culturally sensitive materials and Spanish-speaking resources.")
+            st.markdown("- Combat stigma through education and myth-busting outreach.")
+        elif key == "Asian, NH":
+            st.markdown("**Asian, NH:**")
+            st.markdown("- Emphasize how Alzheimer's differs from normal aging to improve detection and participation.")
+        elif key == "AIAN, NH":
+            st.markdown("**AIAN, NH:**")
+            st.markdown("- Use community-based events to build trust.")
+            st.markdown("- Offer transportation support and involve tribal health leaders.")
+        elif key == "NHPI, NH":
+            st.markdown("**NHPI, NH:**")
+            st.markdown("- Incorporate family-based and holistic outreach models.")
+            st.markdown("- Highlight research as a tool for long-term community wellness.")
+        elif key == "Other":
+            st.markdown("**Other:**")
+            st.markdown("- Apply personalized outreach through local community and faith groups.")
+            st.markdown("- Translate materials and provide multilingual staff if needed.")

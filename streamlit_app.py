@@ -112,7 +112,7 @@ with col3:
     for key, diff in sorted(race_diffs_pos, key=lambda x: -x[1]):
         st.markdown(f"<span style='color:green'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
 
-    st.markdown("**Other populations**")
+    
     race_diffs_neg = [(key, race_target[key] - race_census[key]) for key in race_census if race_target[key] - race_census[key] < 0]
     for key, diff in sorted(race_diffs_neg, key=lambda x: diff):
         st.markdown(f"<span style='color:red'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
@@ -146,6 +146,44 @@ st.header("Specific Persona Recruitment")
 
 # Only display strategies for groups needing focus
 if disease == "Alzheimer's":
+    st.subheader("Targeted Strategies for Underrepresented Groups")
+
+    # Combine and sort all demographic diffs by size
+    combined_diffs = gender_diffs + race_diffs_pos
+    combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])
+
+    for key, diff in combined_diffs_sorted:
+        if key == "Female":
+            st.markdown("**Female:**")
+            st.markdown("- Connect with research registries and women’s health organizations.")
+            st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
+        elif key == "Male":
+            st.markdown("**Male:**")
+            st.markdown("- Address stigma and increase awareness around cognitive screening.")
+        elif key == "Black, NH":
+            st.markdown("**Black, NH:**")
+            st.markdown("- Reassess use of CDR screening and logical memory scoring to improve inclusivity.")
+            st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
+        elif key == "Hispanic":
+            st.markdown("**Hispanic:**")
+            st.markdown("- Reassess MMSE and logical memory scoring as these can be barriers.")
+            st.markdown("- Provide culturally sensitive materials and Spanish-speaking resources.")
+            st.markdown("- Combat stigma through education and myth-busting outreach.")
+        elif key == "Asian, NH":
+            st.markdown("**Asian, NH:**")
+            st.markdown("- Emphasize how Alzheimer's differs from normal aging to improve detection and participation.")
+        elif key == "AIAN, NH":
+            st.markdown("**AIAN, NH:**")
+            st.markdown("- Use community-based events to build trust.")
+            st.markdown("- Offer transportation support and involve tribal health leaders.")
+        elif key == "NHPI, NH":
+            st.markdown("**NHPI, NH:**")
+            st.markdown("- Incorporate family-based and holistic outreach models.")
+            st.markdown("- Highlight research as a tool for long-term community wellness.")
+        elif key == "Other":
+            st.markdown("**Other:**")
+            st.markdown("- Apply personalized outreach through local community and faith groups.")
+            st.markdown("- Translate materials and provide multilingual staff if needed.")
     st.subheader("Targeted Strategies for Underrepresented Groups")
 
     # Gender-based strategy example (optional expansion)

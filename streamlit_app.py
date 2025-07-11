@@ -155,7 +155,7 @@ if disease == "Alzheimer's":
             st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
         elif key == "Hispanic":
             st.markdown("**Hispanic:**")
-            st.markdown("- Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers.") MMSE and logical memory scoring as these can be barriers.")
+            st.markdown("- Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."))
             st.markdown("- Provide culturally sensitive materials and Spanish-speaking resources.")
             st.markdown("- Combat stigma through education and myth-busting outreach.")
         elif key == "Asian, NH":

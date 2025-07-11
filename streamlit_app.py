@@ -4,8 +4,20 @@ import pandas as pd
 st.set_page_config(layout="wide")
 
 # --- Constants ---
+SCHIZOPHRENIA_TARGET = {
+    "Gender": {"Female": 40.0, "Male": 60.0},
+    "Race": {
+        "Hispanic": 15.0,
+        "White, NH": 30.0,
+        "Black, NH": 25.0,
+        "Asian, NH": 10.0,
+        "AIAN, NH": 10.0,
+        "NHPI, NH": 5.0,
+        "Other": 5.0
+    }
+}
 US_CENSUS = {
-    "Gender": {"Female": 51.0, "Male": 49.0},
+    "Gender": {"Female": 50.5, "Male": 49.5},
     "Race": {
         "Hispanic": 17.6,
         "White, NH": 61.1,
@@ -19,6 +31,16 @@ US_CENSUS = {
 
 ALZHEIMERS_TARGET = {
     "Gender": {"Female": 64.0, "Male": 36.0},
+    "Race": {
+        "Hispanic": 21.2,
+        "White, NH": 51.7,
+        "Black, NH": 19.2,
+        "Asian, NH": 5.9,
+        "AIAN, NH": 0.8,
+        "NHPI, NH": 0.3,
+        "Other": 0.9  # Adjusted to make total 100.0
+    }
+},
     "Race": {
         "Hispanic": 21.2,
         "White, NH": 51.7,
@@ -48,7 +70,7 @@ st.title("🎯 US vs Target Demographic Comparator")
 
 # --- Dropdowns ---
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
-disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Other"])
+disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
 
 # --- Column Layout ---
 col1, col2, col3 = st.columns([1, 1, 1])
@@ -58,6 +80,9 @@ if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
     target = BIPOLAR_TARGET
+else:
+    elif disease == "Schizophrenia":
+    target = SCHIZOPHRENIA_TARGET
 else:
     target = US_CENSUS
 
@@ -75,6 +100,10 @@ with col1:
 
 with col2:
     st.markdown(f"**Gender targets for {disease}**")
+    if disease == "Schizophrenia":
+        st.caption("These demographic targets are not validated.")
+    if disease == "Schizophrenia":
+        st.caption("These demographic targets are not validated.")
     gender_target = {}
     total_gender = 0
     for key, value in target["Gender"].items():
@@ -98,6 +127,10 @@ with col1:
 
 with col2:
     st.markdown(f"**Demographic targets for {disease}**")
+    if disease == "Schizophrenia":
+        st.caption("These demographic targets are not validated.")
+    if disease == "Schizophrenia":
+        st.caption("These demographic targets are not validated.")
     race_target = {}
     total_race = 0
     for key, value in target["Race"].items():

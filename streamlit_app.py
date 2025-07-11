@@ -41,17 +41,6 @@ ALZHEIMERS_TARGET = {
         "Other": 0.9
     }
 }
-},
-    "Race": {
-        "Hispanic": 21.2,
-        "White, NH": 51.7,
-        "Black, NH": 19.2,
-        "Asian, NH": 5.9,
-        "AIAN, NH": 0.8,
-        "NHPI, NH": 0.3,
-        "Other": 1.9
-    }
-}
 
 BIPOLAR_TARGET = {
     "Gender": {"Female": 51.0, "Male": 49.0},

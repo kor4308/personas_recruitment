@@ -117,6 +117,9 @@ with col3:
     for key, diff in sorted(race_diffs_neg, key=lambda x: diff):
         st.markdown(f"<span style='color:red'>{key}: {diff:+.1f}%</span>", unsafe_allow_html=True)
 
+
+
+
 # --- Recruitment Motivators Section ---
 st.markdown("---")
 st.header("General Recruitment Motivators")
@@ -128,7 +131,6 @@ if disease == "Alzheimer's":
     with col2:
         st.markdown("<span style='color:red'>●</span> **Recruitment Barriers & Solutions**", unsafe_allow_html=True)
         st.markdown("<span style='color:red'>●</span> Study Partner Barriers → Provide logistical and emotional support to study partners<br><span style='color:red'>●</span> Procedure/Investigational Burden → Shift to blood-based biomarkers and hybrid visit flexibility<br><span style='color:red'>●</span> Disease Stigma → Normalize participation through storytelling and community leaders<br><span style='color:red'>●</span> Population Considerations → Address cultural/linguistic accessibility and trusted communication", unsafe_allow_html=True)
-
 elif disease == "Bipolar Disorder":
     col1, col2 = st.columns(2)
     with col1:

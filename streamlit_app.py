@@ -144,7 +144,7 @@ st.header("Specific Persona Recruitment")
 
 # Only display strategies for groups needing focus
 if disease == "Alzheimer's":
-    st.subheader("Targeted Strategies for Underrepresented Groups")
+    st.header(f"Strategy Recommendations For {disease}")
 
     # Combine and sort all demographic diffs by size
     combined_diffs = gender_diffs + race_diffs_pos
@@ -158,8 +158,7 @@ if disease == "Alzheimer's":
         elif key == "Male":
             st.markdown("**Male:**")
             st.markdown("- Address stigma and increase awareness around cognitive screening.")
-    for key, diff in race_diffs_pos:
-        if key == "Black, NH":
+        elif key == "Black, NH":
             st.markdown("**Black, NH:**")
             st.markdown("- Reassess use of CDR screening and logical memory scoring to improve inclusivity.")
             st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
@@ -182,4 +181,11 @@ if disease == "Alzheimer's":
         elif key == "Other":
             st.markdown("**Other:**")
             st.markdown("- Apply personalized outreach through local community and faith groups.")
-            st.markdown("- Translate materials and provide multilingual staff if needed.")
+            st.markdown("- Translate materials and provide multilingual staff if needed.")        if key == "Female":
+            st.markdown("**Female:**")
+            st.markdown("- Connect with research registries and women’s health organizations.")
+            st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
+        elif key == "Male":
+            st.markdown("**Male:**")
+            st.markdown("- Address stigma and increase awareness around cognitive screening.")
+    

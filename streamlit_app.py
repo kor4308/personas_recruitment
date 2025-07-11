@@ -38,6 +38,16 @@ ALZHEIMERS_TARGET = {
         "Asian, NH": 5.9,
         "AIAN, NH": 0.8,
         "NHPI, NH": 0.3,
+        "Other": 0.9
+    }
+}
+    "Race": {
+        "Hispanic": 21.2,
+        "White, NH": 51.7,
+        "Black, NH": 19.2,
+        "Asian, NH": 5.9,
+        "AIAN, NH": 0.8,
+        "NHPI, NH": 0.3,
         "Other": 0.9  # Adjusted to make total 100.0
     }
 },
@@ -80,8 +90,7 @@ if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
     target = BIPOLAR_TARGET
-else:
-    elif disease == "Schizophrenia":
+elif disease == "Schizophrenia":
     target = SCHIZOPHRENIA_TARGET
 else:
     target = US_CENSUS

@@ -151,7 +151,7 @@ if disease == "Alzheimer's":
             st.markdown("- Address stigma and increase awareness around cognitive screening.")
         elif key == "Black, NH":
             st.markdown("**Black, NH:**")
-            st.markdown("- Reassess use of CDR screening and logical memory scoring to improve inclusivity.")
+            st.markdown("- Avoid or reassess the need use of CDR screening and logical memory scoring to improve inclusivity.")
             st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
         elif key == "Hispanic":
             st.markdown("**Hispanic:**")

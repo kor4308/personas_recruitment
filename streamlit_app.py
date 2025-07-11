@@ -5,7 +5,7 @@ st.set_page_config(layout="wide")
 
 # --- Constants ---
 US_CENSUS = {
-    "Gender": {"Female": 51, "Male": 49},
+    "Gender": {"Female": 51.0, "Male": 49.0},
     "Race": {
         "Hispanic": 17.6,
         "White, NH": 61.1,
@@ -18,7 +18,7 @@ US_CENSUS = {
 }
 
 ALZHEIMERS_TARGET = {
-    "Gender": {"Female": 64, "Male": 36},
+    "Gender": {"Female": 64.0, "Male": 36.0},
     "Race": {
         "Hispanic": 21.2,
         "White, NH": 51.7,
@@ -31,7 +31,7 @@ ALZHEIMERS_TARGET = {
 }
 
 BIPOLAR_TARGET = {
-    "Gender": {"Female": 51, "Male": 49},
+    "Gender": {"Female": 51.0, "Male": 49.0},
     "Race": {
         "Hispanic": 18.5,
         "White, NH": 53.0,
@@ -60,7 +60,7 @@ else:
 
 # --- Functions ---
 def adjustable_input(label, default):
-    return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=label)
+    return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=f"input_{label}")
 
 # --- Gender Section ---
 st.subheader("Gender Comparison")

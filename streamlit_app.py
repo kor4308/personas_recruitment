@@ -88,7 +88,7 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
-    st.markdown(f"**Gender targets for {disease}**")
+    st.markdown(f"**Gender targets for {disease}** trials")
     st.caption("These demographic targets are not validated.")
     
     gender_target = {}

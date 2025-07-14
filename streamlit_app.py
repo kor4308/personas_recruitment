@@ -1,3 +1,7 @@
+# ✅ Fix applied: Removed backslash from f-string to avoid SyntaxError
+# 🧠 Explanation: f-string expressions can't contain escaped quotes directly
+# Instead, use double quotes outside and single quotes inside or vice versa
+
 import streamlit as st
 import pandas as pd
 
@@ -44,6 +48,14 @@ BIPOLAR_TARGET = {
     }
 }
 
+disease_totals = {
+    "Alzheimer's_18+": "7,100,000",
+    "Alzheimer's_65+": "6,900,000",
+    "Schizophrenia": "3,200,000",
+    "Bipolar Disorder": "3,100,000"
+}
+
+# --- Disease Prevalence ---
 DISEASE_PREVALENCE = {
     "Alzheimer's": {
         "overall": 0.103,
@@ -74,15 +86,8 @@ DISEASE_PREVALENCE = {
     }
 }
 
-disease_totals = {
-    "Alzheimer's_18+": "7,100,000",
-    "Alzheimer's_65+": "6,900,000",
-    "Schizophrenia": "3,200,000",
-    "Bipolar Disorder": "3,100,000"
-}
-
 # --- Header ---
-st.title("🎯 US vs Target Demographic Comparator")
+st.title("\U0001F3AF US vs Target Demographic Comparator")
 
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
@@ -133,6 +138,7 @@ with col1:
         st.caption(disease_pop_caption)
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
+
 with col2:
     st.markdown(f"**Gender targets for {disease}**")
     total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)

@@ -136,7 +136,7 @@ with col1:
 
     with col_dis:
         st.markdown(f"**{disease} Disease Population - Gender**")
-        st.caption("Numbers from Alzheimer's Association (2023)")
+        st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated, but randomly generated")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)

@@ -131,8 +131,7 @@ with col1:
         for key, value in target["Gender"].items():
             count = int((value / 100) * total_disease_pop)
             st.text(f"{key}: {value}%")
-            gender_label = f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease"
-            gender_label = gender_label.replace("individuals with AD", "individuals with Alzheimer's")
+            gender_label = f"~{count:,} {key} individuals with Alzheimer's" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease"
             st.caption(gender_label)
 
         st.markdown(f"**{disease} (AD) Population**" if disease == "Alzheimer's" else f"**{disease} Disease Population**")
@@ -167,21 +166,38 @@ with col2:
 # --- Column 3 ---
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    gender_data = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         screen_success_rate = st.session_state.get(f"sf_gender_{key}", 100) / 100
         screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
         eligible_pop = int((value / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        gender_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
+
+    gender_data.sort(key=lambda x: -x[2])
+    for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in gender_data:
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    race_data = []
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         screen_success_rate = st.session_state.get(f"sf_race_{key}", 100) / 100
         screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
         eligible_pop = int((value / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        race_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
+
+    race_data.sort(key=lambda x: -x[2])
+    for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in race_data:
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
+
+    if st.toggle("Show Calculation Steps"):
+        st.markdown("### Calculation Breakdown")
+        for category, data in [("Gender", gender_data), ("Race", race_data)]:
+            st.markdown(f"**{category} Calculations**")
+            for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
+                st.text(f"{key}: target={target_n:.1f}, success_rate={screen_success_rate:.2f}, eligible={eligible_pop}, screened={screened_needed}")

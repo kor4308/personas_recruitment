@@ -147,7 +147,7 @@ with col1:
             st.caption(f"~{count:,} {key} individuals with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
 
         st.markdown(f"**{disease} Disease Population - Race**")
-    for key, value in target["Race"].items():
+        for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} {key} individuals with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if disease == "Alzheimer's" and key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
@@ -190,7 +190,7 @@ with col3:
         st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
         st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} {disease} patients must be screened.")
 
-        st.markdown("**Estimated Quantity Needed to Screen - Race**")
+                st.markdown("**Estimated Quantity Needed to Screen - Race**")
 st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)

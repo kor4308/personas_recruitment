@@ -180,22 +180,30 @@ with col2:
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
     st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
+    gender_results = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        st.markdown(f"{key}: {int(screened_needed):,} (**{screen_percent:.3f}%**)\n")
+        gender_results.append((key, screened_needed, screen_percent))
+
+    for key, screened_needed, screen_percent in sorted(gender_results, key=lambda x: -x[2]):
+        st.markdown(f"{key}: {int(screened_needed):,} (**{screen_percent:.3f}%**)")
         st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
     st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
+    race_results = []
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
         fail_rate = 1 - st.session_state.get(f"sf_race_{key}", 100) / 100
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        st.markdown(f"{key}: {int(screened_needed):,} (**{screen_percent:.3f}%**)\n")
+        race_results.append((key, screened_needed, screen_percent))
+
+    for key, screened_needed, screen_percent in sorted(race_results, key=lambda x: -x[2]):
+        st.markdown(f"{key}: {int(screened_needed):,} (**{screen_percent:.3f}%**)")
         st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} individuals must be screened.")

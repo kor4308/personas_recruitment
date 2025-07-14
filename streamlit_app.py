@@ -169,6 +169,10 @@ with col3:
         screen_ratio = estimated_screen / total_group_pop if total_group_pop else 0
         estimated_screens.append((key, estimated_screen, screen_ratio))
 
+    race_target = {}
+    for key, value in target["Race"].items():
+        race_target[key] = value
+
     for key in race_target:
         pct = race_target[key] / 100
         prev = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])

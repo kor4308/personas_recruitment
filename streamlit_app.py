@@ -128,7 +128,7 @@ with col1:
             count = int((value / 100) * US_TOTAL_POP)
             st.caption(f"~{count:,} individuals")
 
-        st.markdown(" \n ")
+        
         st.markdown("**2023 US Census Population - Race**")
         st.markdown(" \n ")
         for key, value in current_us["Race"].items():

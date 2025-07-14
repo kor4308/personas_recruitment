@@ -70,7 +70,7 @@ BIPOLAR_TARGET = {
 }
 
 # --- Title ---
-st.title("🎯 US vs Target Demographic Comparator")
+st.title("\ud83c\udfaf US vs Target Demographic Comparator")
 
 # --- Dropdowns ---
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
@@ -166,6 +166,10 @@ with col1:
         prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         st.caption(f"Estimated prevalence among {key}: {prevalence * 100:.1f}%")
 
+    st.markdown(f"**Disease epidemiology among {disease} based on gender:**")
+    for key, value in target["Gender"].items():
+        st.text(f"{key}: {value}%")
+
 with col2:
     total_enroll_gender = st.markdown(f"**Gender targets for {disease}**")
     total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll_target")
@@ -177,15 +181,14 @@ with col2:
         with col_gender:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_gender_{key}")
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100, step=1.0, key=f"sf_gender_{key}")
         gender_target[key] = val
-        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
         total_gender += val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
-    
     gender_estimates = []
     for key, val in gender_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
@@ -206,6 +209,10 @@ with col1:
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         st.caption(f"Estimated prevalence among {key}: {prevalence * 100:.1f}%")
 
+    st.markdown(f"**Disease epidemiology among {disease} based on race:**")
+    for key, value in target["Race"].items():
+        st.text(f"{key}: {value}%")
+
 with col2:
     st.markdown(f"**Race targets for {disease}**")
     st.caption("These demographic targets are not validated.")
@@ -216,15 +223,14 @@ with col2:
         with col_race:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100, step=1.0, key=f"sf_race_{key}")
         race_target[key] = val
-        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
         total_race += val
     st.markdown(f"**Total: {total_race:.1f}%**")
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
-    
     race_estimates = []
     for key, val in race_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])

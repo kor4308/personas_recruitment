@@ -154,8 +154,6 @@ with col1:
 
 with col2:
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
-    st.markdown(f"**Target Enrollment by Gender for {disease}**")
-    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     total_gender_pct = 0
     for key, value in target["Gender"].items():
         cols = st.columns([1, 1])
@@ -188,7 +186,7 @@ with col3:
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
-        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} {disease} patients must be screened.")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
     for key, value in target["Race"].items():

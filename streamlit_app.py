@@ -121,9 +121,9 @@ with col1:
 
     col_us, col_dis = st.columns(2)
     with col_us:
-        st.markdown("**US Census - Gender**")
+        st.markdown("**2023 US Census - Gender**")
         st.caption("Numbers directly from US Census (2023)")
-        st.markdown(" \n ")
+        
         st.markdown(" \n ")
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
@@ -131,7 +131,7 @@ with col1:
             st.caption(f"~{count:,} individuals")
 
         st.markdown(" \n ")
-        st.markdown("**US Census - Race**")
+        st.markdown("**2023 US Census - Race**")
         st.markdown(" \n ")
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
@@ -139,14 +139,14 @@ with col1:
             st.caption(f"~{count:,} individuals")
 
     with col_dis:
-        st.markdown(f"**{disease} Epidemiology - Gender**")
+        st.markdown(f"**{disease} Disease Population - Gender**")
         st.caption("Numbers from Alzheimer's Association (2023)")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
 
-        st.markdown(f"**{disease} Epidemiology - Race**")
+        st.markdown(f"**{disease} Disease Population - Race**")
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)

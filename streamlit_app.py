@@ -137,7 +137,7 @@ with col1:
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} {key} individuals with {disease} Disease" if key not in target["Gender"] else f"~{count:,} {key} individuals with {disease}")
+            st.caption(f"~{count:,} {key} individuals with {disease} Disease" if key in target["Race"] else f"~{count:,} {key} individuals with {disease}")
 
 # --- Column 2: Input ---
 with col2:

@@ -82,14 +82,62 @@ DISEASE_PREVALENCE = {
     }
 }
 
-# --- Placeholder: col3 will be defined in Streamlit columns layout ---
-col3 = st.container()
-
 # --- Final Column Update ---
+# Moved into main Streamlit layout
+st.title("\U0001F3AF US vs Target Demographic Comparator")
+therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
+disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
+age_group = None
+if disease == "Alzheimer's":
+    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
+    st.caption("Population estimates reflect U.S. population in selected age group.")
+
+# Determine targets and US pop
+if disease == "Alzheimer's":
+    target = ALZHEIMERS_TARGET
+elif disease == "Bipolar Disorder":
+    target = BIPOLAR_TARGET
+elif disease == "Schizophrenia":
+    target = SCHIZOPHRENIA_TARGET
+else:
+    target = US_CENSUS
+
+if disease == "Alzheimer's" and age_group == "65+":
+    US_TOTAL_POP = 55792501
+    current_us = US_65PLUS
+    total_disease_pop = disease_totals["Alzheimer's_65+"]
+elif disease == "Alzheimer's":
+    US_TOTAL_POP = 342_000_000
+    current_us = US_CENSUS
+    total_disease_pop = disease_totals["Alzheimer's_18+"]
+else:
+    US_TOTAL_POP = 342_000_000
+    current_us = US_CENSUS
+    total_disease_pop = disease_totals.get(disease, US_TOTAL_POP)
+
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col2:
+    st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+    demo_target = {}
+    total_demo = 0
+    for category in ["Gender", "Race"]:
+        for key, value in target[category].items():
+            col_demo, col_fail = st.columns([3, 2])
+            with col_demo:
+                val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"demo_input_{key}")
+            with col_fail:
+                default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
+                fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_demo_{key}")
+            demo_target[key] = val
+            DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
+            total_demo += val
+    st.markdown(f"**Total: {total_demo:.1f}%**")
+
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     demo_estimates = []
-    total_disease_pop = disease_totals.get(f"{disease}_{age_group}" if disease == "Alzheimer's" else disease, US_TOTAL_POP)
     for key, val in demo_target.items():
         prevalence = DISEASE_PREVALENCE[disease].get("Gender", {}).get(key,
                      DISEASE_PREVALENCE[disease].get("Race", {}).get(key, DISEASE_PREVALENCE[disease]["overall"]))

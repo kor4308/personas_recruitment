@@ -116,25 +116,39 @@ else:
 col1, col2, col3 = st.columns([1, 1, 1])
 
 with col1:
-    st.markdown("**US Census Demographics**")
-    st.caption(f"Total Population: {US_TOTAL_POP:,}")
-    st.markdown("**Gender**")
-    for key, value in current_us["Gender"].items():
-        st.text(f"{key}: {value}%")
-    st.markdown("**Race**")
-    for key, value in current_us["Race"].items():
-        st.text(f"{key}: {value}%")
+    st.markdown("**Demographics Overview**")
+    st.caption(f"Total US Population: {US_TOTAL_POP:,} | Total with {disease}: {total_disease_pop:,}")
 
-    st.markdown(f"**Disease Epidemiology in {disease}**")
-    st.caption(f"Total population with {disease}: {total_disease_pop:,}")
-    st.markdown("**Gender**")
-    for key, value in target["Gender"].items():
-        st.text(f"{key}: {value}%")
-    st.markdown("**Race**")
-    for key, value in target["Race"].items():
-        st.text(f"{key}: {value}%")
+    col_us, col_dis = st.columns(2)
+    with col_us:
+        st.markdown("**US Census - Gender**")
+        st.caption("Numbers directly from US Census (2023)")
+        for key, value in current_us["Gender"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * US_TOTAL_POP)
+            st.caption(f"~{count:,} individuals")
 
-with col2:
+        st.markdown("**US Census - Race**")
+        for key, value in current_us["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * US_TOTAL_POP)
+            st.caption(f"~{count:,} individuals")
+
+    with col_dis:
+        st.markdown(f"**{disease} Epidemiology - Gender**")
+        st.caption("Numbers from Alzheimer's Association (2023). AIAN and NHPI not included in report, so from internet.")
+        for key, value in target["Gender"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} with {disease}")
+
+        st.markdown(f"**{disease} Epidemiology - Race**")
+        for key, value in target["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} with {disease}")
+
+
     st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     demo_target = {}

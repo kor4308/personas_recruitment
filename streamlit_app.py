@@ -40,7 +40,7 @@ BIPOLAR_TARGET = {
     "Gender": {"Female": 51.0, "Male": 49.0},
     "Race": {
         "Hispanic": 18.5, "White, NH": 53.0, "Black, NH": 16.0,
-        "Asian, NH": 7.0, "AIAN, NH": 1.0, "NHPI, NH": 0.5, "Other": 4.0
+        "Asian, NH": 7.0, "AIAN, NH": 1.0, "NHPI, NH": 0.61, "Other": 4.0
     }
 }
 
@@ -60,7 +60,7 @@ DISEASE_PREVALENCE = {
             "Black, NH": 0.65,
             "Hispanic": 0.7,
             "Asian, NH": 0.55,
-            "AIAN, NH": 0.5,
+            "AIAN, NH": 0.63,
             "NHPI, NH": 0.5,
             "Other": 0.5
         }

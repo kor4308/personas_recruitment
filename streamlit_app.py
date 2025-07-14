@@ -105,29 +105,33 @@ with col1:
     st.markdown("**Demographics Overview**")
     st.caption(f"Total US Population: {US_TOTAL_POP:,} | Total with {disease}: {total_disease_pop:,}")
 
-    st.markdown("**2023 US Census Population - Gender**")
-    for key, value in current_us["Gender"].items():
-        st.text(f"{key}: {value}%")
-        count = int((value / 100) * US_TOTAL_POP)
-        st.caption(f"~{count:,} {key} individuals")
+    col_us, col_dis = st.columns(2, gap="small")
 
-    st.markdown("**2023 US Census Population - Race**")
-    for key, value in current_us["Race"].items():
-        st.text(f"{key}: {value}%")
-        count = int((value / 100) * US_TOTAL_POP)
-        st.caption(f"~{count:,} {key} individuals")
+    with col_us:
+        st.markdown("**2023 US Census Population - Gender**")
+        for key, value in current_us["Gender"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * US_TOTAL_POP)
+            st.caption(f"~{count:,} {key} individuals")
 
-    st.markdown(f"**{disease} Disease Population**")
-    for key, value in target["Gender"].items():
-        st.text(f"{key}: {value}%")
-        count = int((value / 100) * total_disease_pop)
-        st.caption(f"~{count:,} {key} individuals with {disease}")
+        st.markdown("**2023 US Census Population - Race**")
+        for key, value in current_us["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * US_TOTAL_POP)
+            st.caption(f"~{count:,} {key} individuals")
 
-    st.markdown(f"**{disease} Disease Population - Race**")
-    for key, value in target["Race"].items():
-        st.text(f"{key}: {value}%")
-        count = int((value / 100) * total_disease_pop)
-        st.caption(f"~{count:,} {key} individuals with {disease}")
+    with col_dis:
+        st.markdown(f"**{disease} Disease Population - Gender**")
+        for key, value in target["Gender"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} {key} individuals with {disease}")
+
+        st.markdown(f"**{disease} Disease Population - Race**")
+        for key, value in target["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} {key} individuals with {disease}")
 
 # --- Column 2: Input ---
 with col2:
@@ -161,6 +165,7 @@ with col3:
         eligible_pop = total_disease_pop * (value / 100)
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
+        eligible_pop = total_disease_pop * (value / 100)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         gender_results.append((key, int(screened_needed), screen_percent))
 

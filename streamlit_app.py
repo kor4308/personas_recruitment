@@ -128,6 +128,12 @@ with col1:
             count = int((value / 100) * US_TOTAL_POP)
             st.caption(f"~{count:,} {key} individuals in the United States")
 
+        st.markdown("**2023 US Census Population - Race**")
+        for key, value in current_us["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * US_TOTAL_POP)
+            st.caption(f"~{count:,} {key} individuals in the United States")
+
     with col_dis:
         st.markdown(f"**{disease} Disease Population**")
         st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")

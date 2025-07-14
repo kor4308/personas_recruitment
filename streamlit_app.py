@@ -265,7 +265,7 @@ if disease == "Alzheimer's":
             st.markdown("- Apply personalized outreach through local community and faith groups.")
             st.markdown("- Translate materials and provide multilingual staff if needed.")
 
-        elif key == \"White, NH\":
+        elif key == "White, NH":
             st.markdown("**White, NH:**")
             if ratio_text:
                 st.caption(ratio_text)

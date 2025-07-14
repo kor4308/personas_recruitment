@@ -126,7 +126,7 @@ with col1:
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
-            st.caption(f"~{count:,} {'Non-Hispanic ' + key.split(',')[0] if ', NH' in key else key} individuals in the United States")
+            st.caption(f"~{count:,} {key} individuals in the United States")
 
     with col_dis:
         st.markdown(f"**{disease} Disease Population**")
@@ -134,7 +134,7 @@ with col1:
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} {key.lower()}s with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
+            st.caption(f"~{count:,} {key} individuals with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
 
         st.markdown(f"**{disease} Disease Population - Race**")
         for key, value in target["Race"].items():

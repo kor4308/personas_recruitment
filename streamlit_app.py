@@ -169,7 +169,7 @@ with col3:
         target_n = total_enroll * (value / 100)
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
         screened_needed = math.ceil(target_n * (1 + fail_rate))
-        eligible_pop = int((value / 100) * total_disease_pop)
+        eligible_pop = int((target["Gender"][key] / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
@@ -179,7 +179,7 @@ with col3:
         target_n = total_enroll * (value / 100)
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
         screened_needed = math.ceil(target_n * (1 + fail_rate))
-        eligible_pop = int((value / 100) * total_disease_pop)
+        eligible_pop = int((target["Race"][key] / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")

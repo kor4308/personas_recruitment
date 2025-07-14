@@ -183,7 +183,7 @@ with col2:
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
-    st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
+    
     gender_estimates = []
     for key, val in gender_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
@@ -192,7 +192,7 @@ with col3:
         percentage = (est_target_n / US_TOTAL_POP) * 100
         gender_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(gender_estimates, key=lambda x: -x[2]):
-        st.markdown(f"**{key}**: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+    st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
 
 # --- Race Comparison Section ---
 st.subheader("Race Comparison")
@@ -219,7 +219,7 @@ with col2:
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
-    st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
+    
     race_estimates = []
     for key, val in race_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
@@ -228,4 +228,4 @@ with col3:
         percentage = (est_target_n / US_TOTAL_POP) * 100
         race_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(race_estimates, key=lambda x: -x[2]):
-        st.markdown(f"**{key}**: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+    st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")

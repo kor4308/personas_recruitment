@@ -81,6 +81,7 @@ disease_totals = {
     "Bipolar Disorder": "3,100,000"
 }
 
+# --- Header ---
 st.title("🎯 US vs Target Demographic Comparator")
 
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
@@ -90,6 +91,7 @@ if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
+# --- Determine Target & US Population ---
 if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -112,9 +114,10 @@ else:
     current_us = US_CENSUS
     disease_pop_caption = f"Total population with {disease}: {disease_totals.get(disease, 'N/A')}"
 
+# --- Columns Layout ---
 col1, col2, col3 = st.columns([1, 1, 1])
 
-# Gender Comparison Display
+# --- Gender Section ---
 st.subheader("Gender Comparison")
 with col1:
     subcol1, subcol2 = st.columns(2)
@@ -130,7 +133,6 @@ with col1:
         st.caption(disease_pop_caption)
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
-
 with col2:
     st.markdown(f"**Gender targets for {disease}**")
     total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)

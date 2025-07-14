@@ -130,7 +130,7 @@ with col1:
 
         
         st.markdown("**2023 US Census Population - Race**")
-        st.markdown(" \n ")
+        
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)

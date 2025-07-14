@@ -49,10 +49,10 @@ BIPOLAR_TARGET = {
 }
 
 disease_totals = {
-    "Alzheimer's_18+": "7,100,000",
-    "Alzheimer's_65+": "6,900,000",
-    "Schizophrenia": "3,200,000",
-    "Bipolar Disorder": "3,100,000"
+    "Alzheimer's_18+": 7100000,
+    "Alzheimer's_65+": 6900000,
+    "Schizophrenia": 3200000,
+    "Bipolar Disorder": 3100000
 }
 
 # --- Disease Prevalence ---
@@ -64,7 +64,7 @@ DISEASE_PREVALENCE = {
             "White, NH": 0.08, "Black, NH": 0.14, "Hispanic": 0.11,
             "Asian, NH": 0.06, "AIAN, NH": 0.07, "NHPI, NH": 0.07, "Other": 0.07
         },
-        "screen_fail": {k: 0.3 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {k: 0.6 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     },
     "Schizophrenia": {
         "overall": 0.01,
@@ -73,7 +73,7 @@ DISEASE_PREVALENCE = {
             "White, NH": 0.007, "Black, NH": 0.015, "Hispanic": 0.012,
             "Asian, NH": 0.008, "AIAN, NH": 0.009, "NHPI, NH": 0.009, "Other": 0.01
         },
-        "screen_fail": {k: 0.25 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     },
     "Bipolar Disorder": {
         "overall": 0.03,
@@ -82,95 +82,24 @@ DISEASE_PREVALENCE = {
             "White, NH": 0.028, "Black, NH": 0.032, "Hispanic": 0.03,
             "Asian, NH": 0.025, "AIAN, NH": 0.03, "NHPI, NH": 0.03, "Other": 0.03
         },
-        "screen_fail": {k: 0.25 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     }
 }
 
-# --- Header ---
-st.title("\U0001F3AF US vs Target Demographic Comparator")
-
-therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
-disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
-age_group = None
-if disease == "Alzheimer's":
-    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
-    st.caption("Population estimates reflect U.S. population in selected age group.")
-
-# --- Determine Target & US Population ---
-if disease == "Alzheimer's":
-    target = ALZHEIMERS_TARGET
-elif disease == "Bipolar Disorder":
-    target = BIPOLAR_TARGET
-elif disease == "Schizophrenia":
-    target = SCHIZOPHRENIA_TARGET
-else:
-    target = US_CENSUS
-
-if disease == "Alzheimer's" and age_group == "65+":
-    US_TOTAL_POP = 55792501
-    current_us = US_65PLUS
-    value = disease_totals["Alzheimer's_65+"]
-    disease_pop_caption = f"Total population with Alzheimer's: {value}"
-elif disease == "Alzheimer's":
-    US_TOTAL_POP = 342_000_000
-    current_us = US_CENSUS
-    value = disease_totals["Alzheimer's_18+"]
-    disease_pop_caption = f"Total population with Alzheimer's: {value}"
-else:
-    US_TOTAL_POP = 342_000_000
-    current_us = US_CENSUS
-    disease_pop_caption = f"Total population with {disease}: {disease_totals.get(disease, 'N/A')}"
-
-# --- Columns Layout ---
-col1, col2, col3 = st.columns([1, 1, 1])
-
-# --- Gender and Race Section ---
-st.subheader("Gender and Race Comparison")
-with col1:
-    subcol1, subcol2 = st.columns(2)
-    with subcol1:
-        st.markdown("**US Census Demographics**")
-        st.caption(f"Total Population: {US_TOTAL_POP:,}")
-        for key, value in current_us["Gender"].items():
-            st.text(f"Gender - {key}: {value}%")
-        for key, value in current_us["Race"].items():
-            st.text(f"Race - {key}: {value}%")
-    with subcol2:
-        st.markdown(f"**Disease Epidemiology in {disease}**")
-        st.caption(disease_pop_caption)
-        for key, value in target["Gender"].items():
-            st.text(f"Gender - {key}: {value}%")
-        for key, value in target["Race"].items():
-            st.text(f"Race - {key}: {value}%")
-
-with col2:
-    st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
-    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
-    demo_target = {}
-    total_demo = 0
-    for category in ["Gender", "Race"]:
-        for key, value in target[category].items():
-            col_demo, col_fail = st.columns([3, 2])
-            with col_demo:
-                val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"demo_input_{key}")
-            with col_fail:
-                default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
-                fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_demo_{key}")
-            demo_target[key] = val
-            DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
-            total_demo += val
-    st.markdown(f"**Total: {total_demo:.1f}%**")
-
+# --- Final Column Update ---
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     demo_estimates = []
+    total_disease_pop = disease_totals.get(f"{disease}_{age_group}" if disease == "Alzheimer's" else disease, US_TOTAL_POP)
     for key, val in demo_target.items():
         prevalence = DISEASE_PREVALENCE[disease].get("Gender", {}).get(key,
                      DISEASE_PREVALENCE[disease].get("Race", {}).get(key, DISEASE_PREVALENCE[disease]["overall"]))
-        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
-        est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
-        percentage = (est_target_n / US_TOTAL_POP) * 100
-        demo_estimates.append((key, est_target_n, percentage))
-    for key, est_target_n, percentage in sorted(demo_estimates, key=lambda x: -x[2]):
-        st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
-        st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        eligible_with_condition = total_disease_pop * prevalence
+        needed_in_trial = (val / 100) * total_enroll
+        to_screen = needed_in_trial * (1 + fail_rate)
+        screen_percent = (to_screen / eligible_with_condition) * 100 if eligible_with_condition > 0 else 0
+        demo_estimates.append((key, to_screen, screen_percent))
+    for key, to_screen, screen_percent in sorted(demo_estimates, key=lambda x: -x[2]):
+        st.markdown(f"{key}: {int(to_screen):,} ({screen_percent:.3f}%) to screen")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")

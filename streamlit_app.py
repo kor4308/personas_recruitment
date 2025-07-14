@@ -143,14 +143,16 @@ with col1:
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
-    st.markdown(f"**{disease} Disease Population - Race**")
-    for key, value in target["Race"].items():
-        st.text(f"{key}: {value}%")
-        count = int((value / 100) * total_disease_pop)
-        st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    col_us, col_dis_race = st.columns(2)
+    with col_dis_race:
+        st.markdown(f"**{disease} Disease Population - Race**")
+        for key, value in target["Race"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
 
 with col2:
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     st.markdown(f"**Target Enrollment by Gender for {disease}**")
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     demo_target = {}
@@ -181,23 +183,17 @@ with col2:
             DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
             total_demo += val
     st.markdown(f"**Total: {total_demo:.1f}%**")
-with col2:
     st.markdown(f"**Target Enrollment by Race for {disease}**")
-    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
-    demo_target = {}
-    total_demo = 0
-    for category in ["Gender", "Race"]:
-        for key, value in target[category].items():
-            col_demo, col_fail = st.columns([3, 2])
-            with col_demo:
-                val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"demo_input_{key}")
-            with col_fail:
-                default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
-                fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_demo_{key}")
-            demo_target[key] = val
-            DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
-            total_demo += val
-    st.markdown(f"**Total: {total_demo:.1f}%**")
+    for key, value in target["Race"].items():
+        col_demo, col_fail = st.columns([3, 2])
+        with col_demo:
+            val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_input_{key}")
+        with col_fail:
+            default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_race_{key}")
+        demo_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
+        total_demo += val
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")

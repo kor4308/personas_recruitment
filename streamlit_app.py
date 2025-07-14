@@ -192,7 +192,7 @@ with col3:
         percentage = (est_target_n / US_TOTAL_POP) * 100
         gender_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(gender_estimates, key=lambda x: -x[2]):
-    st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+        st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
 
 # --- Race Comparison Section ---
 st.subheader("Race Comparison")
@@ -228,4 +228,4 @@ with col3:
         percentage = (est_target_n / US_TOTAL_POP) * 100
         race_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(race_estimates, key=lambda x: -x[2]):
-    st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+        st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")

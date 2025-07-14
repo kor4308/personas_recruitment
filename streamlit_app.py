@@ -124,49 +124,53 @@ else:
 # --- Columns Layout ---
 col1, col2, col3 = st.columns([1, 1, 1])
 
-# --- Gender Section ---
-st.subheader("Gender Comparison")
+# --- Gender and Race Section ---
+st.subheader("Gender and Race Comparison")
 with col1:
     subcol1, subcol2 = st.columns(2)
     with subcol1:
-        st.markdown("**US Census Gender Demographics**")
+        st.markdown("**US Census Demographics**")
         st.caption(f"Total Population: {US_TOTAL_POP:,}")
         for key, value in current_us["Gender"].items():
-            st.text(f"{key}: {value}%")
-            prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
-            st.caption(f"Estimated prevalence: {prevalence * 100:.1f}%")
+            st.text(f"Gender - {key}: {value}%")
+        for key, value in current_us["Race"].items():
+            st.text(f"Race - {key}: {value}%")
     with subcol2:
         st.markdown(f"**Disease Epidemiology in {disease}**")
         st.caption(disease_pop_caption)
         for key, value in target["Gender"].items():
-            st.text(f"{key}: {value}%")
+            st.text(f"Gender - {key}: {value}%")
+        for key, value in target["Race"].items():
+            st.text(f"Race - {key}: {value}%")
 
 with col2:
-    st.markdown(f"**Gender targets for {disease}**")
-    total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
-    gender_target = {}
-    total_gender = 0
-    for key, value in target["Gender"].items():
-        col_gender, col_fail = st.columns([3, 2])
-        with col_gender:
-            val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_input_{key}")
-        with col_fail:
-            default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_gender_{key}")
-        gender_target[key] = val
-        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
-        total_gender += val
-    st.markdown(f"**Total: {total_gender:.1f}%**")
+    st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+    demo_target = {}
+    total_demo = 0
+    for category in ["Gender", "Race"]:
+        for key, value in target[category].items():
+            col_demo, col_fail = st.columns([3, 2])
+            with col_demo:
+                val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"demo_input_{key}")
+            with col_fail:
+                default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
+                fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_demo_{key}")
+            demo_target[key] = val
+            DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
+            total_demo += val
+    st.markdown(f"**Total: {total_demo:.1f}%**")
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
-    gender_estimates = []
-    for key, val in gender_target.items():
-        prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
+    demo_estimates = []
+    for key, val in demo_target.items():
+        prevalence = DISEASE_PREVALENCE[disease].get("Gender", {}).get(key,
+                     DISEASE_PREVALENCE[disease].get("Race", {}).get(key, DISEASE_PREVALENCE[disease]["overall"]))
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
         est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
         percentage = (est_target_n / US_TOTAL_POP) * 100
-        gender_estimates.append((key, est_target_n, percentage))
-    for key, est_target_n, percentage in sorted(gender_estimates, key=lambda x: -x[2]):
+        demo_estimates.append((key, est_target_n, percentage))
+    for key, est_target_n, percentage in sorted(demo_estimates, key=lambda x: -x[2]):
         st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
         st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")

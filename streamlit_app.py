@@ -160,7 +160,7 @@ with col2:
         st.markdown(f"**{key} (%)**")
         val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
         fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
-        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_gender_{key}")
+        fail_val = st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail_val, step=1.0, key=f"sf_gender_{key}")
         total_gender_pct += val
     st.markdown(f"**Total: {total_gender_pct:.1f}%**")
 
@@ -170,7 +170,7 @@ with col2:
         st.markdown(f"**{key} (%)**")
         val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
         fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
-        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_race_{key}")
+        fail_val = st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail_val, step=1.0, key=f"sf_race_{key}")
         total_race_pct += val
     st.markdown(f"**Total: {total_race_pct:.1f}%**")
 
@@ -179,7 +179,7 @@ with col3:
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        fail_rate = 1 - (DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5))
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")

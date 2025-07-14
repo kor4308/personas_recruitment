@@ -87,6 +87,7 @@ DISEASE_PREVALENCE = {
 }
 
 # --- Final Column Update ---
+col1, col2, col3 = st.columns(3)
 # ... [unchanged code for col1 and col2] ...
 
 with col3:

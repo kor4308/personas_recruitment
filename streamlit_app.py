@@ -85,7 +85,6 @@ def adjustable_input(label, default):
     return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=f"input_{label}")
 
 # --- Gender Section ---
-# Constants
 if disease == "Alzheimer's" and age_group:
     if age_group == "60+":
         US_TOTAL_POP = 75000000
@@ -96,7 +95,7 @@ if disease == "Alzheimer's" and age_group:
 else:
     US_TOTAL_POP = 342_000_000
 
-# Disease Prevalence Estimates
+# --- Disease Prevalence ---
 DISEASE_PREVALENCE = {
     "Alzheimer's": {
         "overall": 0.103,
@@ -142,15 +141,12 @@ DISEASE_PREVALENCE = {
     }
 }
 
-# --- Demographic Input Section (Fixed) ---
+# --- Display Gender Census and Target ---
 st.subheader("Gender Comparison")
 with col1:
-    if disease == "Alzheimer's" and age_group:
-        st.markdown(f"**US Census (2023), Population {age_group}**")
-    else:
-        st.markdown("**US Census (2023) Population Estimate**")
-    gender_census = US_CENSUS["Gender"]
-    for key, value in gender_census.items():
+    st.markdown("**US Census (2023) Gender Demographics**")
+    st.caption(f"Total Population: {US_TOTAL_POP:,}")
+    for key, value in US_CENSUS["Gender"].items():
         st.text(f"{key}: {value}%")
 
 with col2:
@@ -169,14 +165,7 @@ with col2:
         total_gender += val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
-    st.markdown(f"**Demographic targets for {disease}**")
-    st.caption("These demographic targets are not validated.")
-    race_target = {}
-    for key, value in target["Race"].items():
-        col_race, col_fail = st.columns([3, 2])
-        with col_race:
-            val = adjustable_input(f"{key} (%)", value)
-        with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
-        race_target[key] = val
-        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+# --- Placeholder for third column ---
+with col3:
+    st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
+    st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")

@@ -1,6 +1,6 @@
 # ✅ Fix applied: Removed backslash from f-string to avoid SyntaxError
 # 🧠 Explanation: f-string expressions can't contain escaped quotes directly
-# Instead, use double quotes outside and single quotes inside or vice versa
+# Instead, use dictionary access outside the f-string to avoid escaping issues
 
 import streamlit as st
 import pandas as pd
@@ -109,11 +109,13 @@ else:
 if disease == "Alzheimer's" and age_group == "65+":
     US_TOTAL_POP = 55792501
     current_us = US_65PLUS
-    disease_pop_caption = f"Total population with Alzheimer's: {disease_totals[\"Alzheimer's_65+\"]}"
+    value = disease_totals["Alzheimer's_65+"]
+    disease_pop_caption = f"Total population with Alzheimer's: {value}"
 elif disease == "Alzheimer's":
     US_TOTAL_POP = 342_000_000
     current_us = US_CENSUS
-    disease_pop_caption = f"Total population with Alzheimer's: {disease_totals[\"Alzheimer's_18+\"]}"
+    value = disease_totals["Alzheimer's_18+"]
+    disease_pop_caption = f"Total population with Alzheimer's: {value}"
 else:
     US_TOTAL_POP = 342_000_000
     current_us = US_CENSUS

@@ -165,9 +165,8 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
-    total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
-    st.markdown(f"**Gender targets for {disease}**")
-    total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+    total_enroll_gender = st.markdown(f"**Gender targets for {disease}**")
+    total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll_target")
     st.caption("These demographic targets are not validated.")
     gender_target = {}
     total_gender = 0

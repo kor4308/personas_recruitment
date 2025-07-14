@@ -123,6 +123,8 @@ with col1:
     with col_us:
         st.markdown("**US Census - Gender**")
         st.caption("Numbers directly from US Census (2023)")
+        st.markdown("  
+  ")
         st.markdown("  ")
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
@@ -131,6 +133,7 @@ with col1:
 
         st.markdown("  ")
         st.markdown("**US Census - Race**")
+        st.markdown("  ")
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
@@ -175,7 +178,7 @@ with col2:
                 elif key == "Asian, NH":
                     fail_val = 60.0
                 else:
-                    fail_val = random.randint(41, 65)
+                    fail_val = float(random.randint(41, 65))
                 fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_demo_{key}")
             demo_target[key] = val
             DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0

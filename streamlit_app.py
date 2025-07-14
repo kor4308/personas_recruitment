@@ -163,10 +163,10 @@ with col3:
     gender_results = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
-        eligible_pop = (current_us["Gender"].get(key, 0) / 100) * total_disease_pop
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
-        eligible_pop = (current_us["Race"].get(key, 0) / 100) * total_disease_pop
+        eligible_pct = current_us["Gender"].get(key, 0) / 100
+        eligible_pop = eligible_pct * total_disease_pop
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         gender_results.append((key, int(screened_needed), screen_percent))
 
@@ -185,7 +185,8 @@ with col3:
     race_results = []
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
-        eligible_pop = total_disease_pop * (value / 100)
+        eligible_pct = current_us["Race"].get(key, 0) / 100
+        eligible_pop = eligible_pct * total_disease_pop
         fail_rate = 1 - (st.session_state.get(f"sf_race_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0

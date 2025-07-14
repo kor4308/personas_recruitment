@@ -211,17 +211,4 @@ with col3:
 ")
         st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
 
-    # Bar chart side-by-side
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    col_bar1, col_bar2 = st.columns(2)
-
-    with col_bar1:
-        st.markdown("**Bar Chart - Gender Screening %**")
-        df_gender = pd.DataFrame(gender_screen_data, columns=["Gender", "Screen %", "Needed"])
-        st.bar_chart(df_gender.set_index("Gender")["Screen %"])
-
-    with col_bar2:
-        st.markdown("**Bar Chart - Race Screening %**")
-        df_race = pd.DataFrame(race_screen_data, columns=["Race", "Screen %", "Needed"])
-        st.bar_chart(df_race.set_index("Race")["Screen %"])
+    

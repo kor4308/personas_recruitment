@@ -166,4 +166,4 @@ with col3:
         demo_estimates.append((key, to_screen, screen_percent))
     for key, to_screen, screen_percent in sorted(demo_estimates, key=lambda x: -x[2]):
         st.markdown(f"{key}: {int(to_screen):,} ({screen_percent:.3f}%) to screen")
-        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")

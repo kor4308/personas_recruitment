@@ -180,7 +180,41 @@ with col2:
         total_gender += val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
-# --- Placeholder for third column ---
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
+    for key, val in gender_target.items():
+        prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
+        est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
+        st.markdown(f"**{key}**: {int(est_target_n):,} to screen")
+
+# --- Race Comparison Section ---
+st.subheader("Race Comparison")
+with col1:
+    st.markdown("**US Census Race Demographics**")
+    for key, value in current_us["Race"].items():
+        st.text(f"{key}: {value}%")
+
+with col2:
+    st.markdown(f"**Race targets for {disease}**")
+    st.caption("These demographic targets are not validated.")
+    race_target = {}
+    total_race = 0
+    for key, value in target["Race"].items():
+        col_race, col_fail = st.columns([3, 2])
+        with col_race:
+            val = adjustable_input(f"{key} (%)", value)
+        with col_fail:
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        race_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+        total_race += val
+    st.markdown(f"**Total: {total_race:.1f}%**")
+
+with col3:
+    for key, val in race_target.items():
+        prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
+        est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
+        st.markdown(f"**{key}**: {int(est_target_n):,} to screen")

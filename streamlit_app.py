@@ -83,7 +83,6 @@ DISEASE_PREVALENCE = {
 }
 
 # --- Final Column Update ---
-# Moved into main Streamlit layout
 st.title("\U0001F3AF US vs Target Demographic Comparator")
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
@@ -92,7 +91,6 @@ if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
-# Determine targets and US pop
 if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -116,6 +114,25 @@ else:
     total_disease_pop = disease_totals.get(disease, US_TOTAL_POP)
 
 col1, col2, col3 = st.columns([1, 1, 1])
+
+with col1:
+    st.markdown("**US Census Demographics**")
+    st.caption(f"Total Population: {US_TOTAL_POP:,}")
+    st.markdown("**Gender**")
+    for key, value in current_us["Gender"].items():
+        st.text(f"{key}: {value}%")
+    st.markdown("**Race**")
+    for key, value in current_us["Race"].items():
+        st.text(f"{key}: {value}%")
+
+    st.markdown(f"**Disease Epidemiology in {disease}**")
+    st.caption(f"Total population with {disease}: {total_disease_pop:,}")
+    st.markdown("**Gender**")
+    for key, value in target["Gender"].items():
+        st.text(f"{key}: {value}%")
+    st.markdown("**Race**")
+    for key, value in target["Race"].items():
+        st.text(f"{key}: {value}%")
 
 with col2:
     st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
@@ -149,4 +166,4 @@ with col3:
         demo_estimates.append((key, to_screen, screen_percent))
     for key, to_screen, screen_percent in sorted(demo_estimates, key=lambda x: -x[2]):
         st.markdown(f"{key}: {int(to_screen):,} ({screen_percent:.3f}%) to screen")
-        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be

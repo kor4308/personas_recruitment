@@ -89,8 +89,23 @@ DISEASE_PREVALENCE = {
     }
 }
 
-# ... (rest of the code remains the same up to col3)
+# --- Default setup before col3 block ---
+disease = "Alzheimer's"
+age_group = "65+"
 
+if disease == "Alzheimer's":
+    target = ALZHEIMERS_TARGET
+elif disease == "Schizophrenia":
+    target = SCHIZOPHRENIA_TARGET
+elif disease == "Bipolar Disorder":
+    target = BIPOLAR_TARGET
+else:
+    target = {"Gender": {}, "Race": {}}
+
+total_disease_pop = disease_totals.get(f"{disease}_{age_group}", 0)
+total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+
+# --- Third Column Output ---
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
     st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")

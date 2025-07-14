@@ -143,14 +143,12 @@ with col1:
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
-            st.markdown("&nbsp;")
 
         st.markdown(f"**{disease} Disease Population - Race**")
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
-            st.markdown("&nbsp;")
 
 with col2:
     st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")

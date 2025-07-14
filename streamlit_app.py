@@ -162,11 +162,11 @@ with col2:
         with col_gender:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
         gender_target[key] = val
         DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
         total_gender += val
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
     race_target[key] = val
     DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
     st.markdown(f"**Total: {total_gender:.1f}%**")
@@ -179,7 +179,7 @@ race_target = {}
     with col_race:
         val = adjustable_input(f"{key} (%)", value)
     with col_fail:
-        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
     race_target[key] = val
     DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
 

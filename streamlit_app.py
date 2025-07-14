@@ -106,35 +106,79 @@ else:
 
 col1, col2, col3 = st.columns(3)
 
-# --- Column 1: Demographics ---
+# --- Column 1 ---
 with col1:
     st.markdown("**Demographics Overview**")
     st.caption(f"Total US Population: {US_TOTAL_POP:,} | Total with {disease}: {total_disease_pop:,}")
 
     col_us, col_dis = st.columns(2, gap="small")
-
     with col_us:
         st.markdown("**2023 US Census Population - Gender**")
         for key, value in current_us["Gender"].items():
-            st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
+            st.text(f"{key}: {value}%")
             st.caption(f"~{count:,} {key.lower()}s in the US")
 
         st.markdown("**2023 US Census Population - Race**")
         for key, value in current_us["Race"].items():
-            st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
+            st.text(f"{key}: {value}%")
             st.caption(f"~{count:,} {key} individuals in the US")
 
     with col_dis:
         st.markdown(f"**{disease} (AD) Population**" if disease == "Alzheimer's" else f"**{disease} Disease Population**")
         for key, value in target["Gender"].items():
-            st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
+            st.text(f"{key}: {value}%")
             st.caption(f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease")
 
         st.markdown(f"**{disease} Disease Population**")
         for key, value in target["Race"].items():
-            st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else (f"~{count:,} {key} individuals with {disease} Disease" if key in target["Race"] else f"~{count:,} {key} individuals with {disease}"))
+            st.text(f"{key}: {value}%")
+            st.caption(f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease")
+
+# --- Column 2 ---
+with col2:
+    st.markdown("**Target Enrollment Inputs**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+
+    st.markdown("**Gender Target % and Screen Success**")
+    for key, value in target["Gender"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
+
+    st.markdown("**Race Target % and Screen Success**")
+    for key, value in target["Race"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
+
+# --- Column 3 ---
+with col3:
+    st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    for key, value in target["Gender"].items():
+        target_n = total_enroll * (value / 100)
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        screened_needed = int(target_n * (1 + fail_rate / (1 - fail_rate)))
+        eligible_pop = int((value / 100) * total_disease_pop)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
+
+    st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    for key, value in target["Race"].items():
+        target_n = total_enroll * (value / 100)
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        screened_needed = int(target_n * (1 + fail_rate / (1 - fail_rate)))
+        eligible_pop = int((value / 100) * total_disease_pop)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")

@@ -118,7 +118,7 @@ with col1:
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
-            st.caption(f"~{count:,} {key} individuals")
+            st.caption(f"~{count:,} {key.lower()}s in the United States")
 
         st.markdown("**2023 US Census Population - Race**")
         for key, value in current_us["Race"].items():

@@ -60,7 +60,11 @@ DISEASE_PREVALENCE = {
             "White, NH": 0.08, "Black, NH": 0.14, "Hispanic": 0.11,
             "Asian, NH": 0.06, "AIAN, NH": 0.07, "NHPI, NH": 0.07, "Other": 0.07
         },
-        "screen_fail": {k: 0.6 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {
+            "Female": 0.6, "Male": 0.3, "White, NH": 0.2,
+            "Black, NH": 0.6, "Hispanic": 0.65, "Asian, NH": 0.6,
+            "AIAN, NH": 0.45, "NHPI, NH": 0.65, "Other": 0.56
+        }
     },
     "Schizophrenia": {
         "overall": 0.01,
@@ -135,7 +139,7 @@ with col1:
             st.caption(f"~{count:,} {key} individuals in the United States")
 
     with col_dis:
-        st.markdown(f"**{disease} Disease Population**")
+        st.markdown(f"**{disease} US Disease Population**")
         st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
@@ -147,3 +151,46 @@ with col1:
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} {key} individuals with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if disease == "Alzheimer's" and key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
+
+with col2:
+    st.markdown(f"**Target Enrollment by Gender for {disease}**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+    total_gender_pct = 0
+    for key, value in target["Gender"].items():
+        st.markdown(f"**{key} (%)**")
+        val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_gender_{key}")
+        total_gender_pct += val
+    st.markdown(f"**Total: {total_gender_pct:.1f}%**")
+
+    st.markdown(f"**Target Enrollment by Race for {disease}**")
+    total_race_pct = 0
+    for key, value in target["Race"].items():
+        st.markdown(f"**{key} (%)**")
+        val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_race_{key}")
+        total_race_pct += val
+    st.markdown(f"**Total: {total_race_pct:.1f}%**")
+
+with col3:
+    st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    for key, value in target["Gender"].items():
+        target_n = total_enroll * (value / 100)
+        eligible_pop = total_disease_pop * (value / 100)
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        screened_needed = target_n / (1 - fail_rate)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")
+
+    st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    for key, value in target["Race"].items():
+        target_n = total_enroll * (value / 100)
+        eligible_pop = total_disease_pop * (value / 100)
+        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        screened_needed = target_n / (1 - fail_rate)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
+        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")

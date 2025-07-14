@@ -141,10 +141,12 @@ DISEASE_PREVALENCE = {
         "screen_fail": {"Female": 0.25, "Male": 0.25, "White, NH": 0.25, "Black, NH": 0.25, "Hispanic": 0.25, "Asian, NH": 0.25, "AIAN, NH": 0.25, "NHPI, NH": 0.25, "Other": 0.25}
     }
 }
+
+# --- Demographic Input Section (Fixed) ---
 st.subheader("Gender Comparison")
 with col1:
     if disease == "Alzheimer's" and age_group:
-        st.markdown(f"**🧓 US Census (2023), Population {age_group}**")
+        st.markdown(f"**US Census (2023), Population {age_group}**")
     else:
         st.markdown("**US Census (2023) Population Estimate**")
     gender_census = US_CENSUS["Gender"]
@@ -154,7 +156,6 @@ with col1:
 with col2:
     st.markdown(f"**Gender targets for {disease}**")
     st.caption("These demographic targets are not validated.")
-    
     gender_target = {}
     total_gender = 0
     for key, value in target["Gender"].items():
@@ -162,158 +163,20 @@ with col2:
         with col_gender:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_gender_{key}")
         gender_target[key] = val
         DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
         total_gender += val
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
-    race_target[key] = val
-    DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
     st.markdown(f"**Demographic targets for {disease}**")
-st.caption("These demographic targets are not validated.")
-race_target = {}
+    st.caption("These demographic targets are not validated.")
+    race_target = {}
     for key, value in target["Race"].items():
-    col_race, col_fail = st.columns([3, 2])
-    with col_race:
-        val = adjustable_input(f"{key} (%)", value)
-    with col_fail:
-        fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}"), step=0.01, key=f"sf_race_{key}")
-    race_target[key] = val
-    DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
-
-with col3:
-    st.markdown("**📊 Estimated Quantity needed to screen to reach target**")
-    estimated_screens = []
-    for key in gender_target:
-        pct = gender_target[key] / 100
-        prev = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
-        fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
-        census_pct = US_CENSUS["Gender"].get(key, 0)
-        total_group_pop = US_TOTAL_POP * census_pct / 100
-        needed_enroll = US_TOTAL_POP * pct * prev
-        estimated_screen = needed_enroll * (1 + fail)
-        screen_ratio = estimated_screen / total_group_pop if total_group_pop else 0
-        estimated_screens.append((key, estimated_screen, screen_ratio))
-
-    
-    for key in race_target:
-        pct = race_target[key] / 100
-        prev = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
-        fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
-        census_pct = US_CENSUS["Race"].get(key, 0)
-        total_group_pop = US_TOTAL_POP * census_pct / 100
-        needed_enroll = US_TOTAL_POP * pct * prev
-        estimated_screen = needed_enroll * (1 + fail)
-        screen_ratio = estimated_screen / total_group_pop if total_group_pop else 0
-        estimated_screens.append((key, estimated_screen, screen_ratio))
-
-    estimated_screens_sorted = sorted(estimated_screens, key=lambda x: -x[2])
-    for key, estimate, ratio in estimated_screens_sorted:
-        st.markdown(f"<span style='color:green'>{key}: {int(estimate):,} people to screen</span>", unsafe_allow_html=True)
-        st.caption(f"To reach target enrollment numbers, approximately {ratio:.1%} of eligible {key} individuals must be screened.")
-
-# --- Recruitment Motivators Section ---
-st.markdown("---")
-st.header("General Recruitment Motivators")
-if disease == "Alzheimer's":
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("<span style='color:green'>●</span> **Recruitment Motivators**", unsafe_allow_html=True)
-        st.markdown("<span style='color:green'>●</span> Trusted voices (HCP referral and Research Centers)<br><span style='color:green'>●</span> Altruism<br><span style='color:green'>●</span> Education & Disease Awareness<br><span style='color:green'>●</span> Personal Benefit (especially among early-stage AD)", unsafe_allow_html=True)
-    with col2:
-        st.markdown("<span style='color:red'>●</span> **Recruitment Barriers & Solutions**", unsafe_allow_html=True)
-        st.markdown("<span style='color:red'>●</span> Study Partner Barriers → Provide logistical and emotional support to study partners<br><span style='color:red'>●</span> Procedure/Investigational Burden → Shift to blood-based biomarkers and hybrid visit flexibility<br><span style='color:red'>●</span> Disease Stigma → Normalize participation through storytelling and community leaders<br><span style='color:red'>●</span> Population Considerations → Address cultural/linguistic accessibility and trusted communication", unsafe_allow_html=True)
-elif disease == "Bipolar Disorder":
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("<span style='color:green'>●</span> **Recruitment Motivators**", unsafe_allow_html=True)
-        st.markdown("<span style='color:green'>●</span> Access to mental health care<br><span style='color:green'>●</span> Hope for improved personal outcomes<br><span style='color:green'>●</span> Financial compensation<br><span style='color:green'>●</span> Peer influence or community-based encouragement", unsafe_allow_html=True)
-    with col2:
-        st.markdown("<span style='color:red'>●</span> **Recruitment Barriers & Solutions**", unsafe_allow_html=True)
-        st.markdown("<span style='color:red'>●</span> Stigma → Partner with mental health advocacy orgs to reduce fear and misinformation<br><span style='color:red'>●</span> Medication concerns → Clearly explain risks and benefits during informed consent<br><span style='color:red'>●</span> Time & Life disruption → Offer flexible scheduling, virtual participation<br><span style='color:red'>●</span> Trust in research → Use transparency and patient testimonials", unsafe_allow_html=True)
-        st.caption("Note: These are not informed recommendations specific to bipolar disorder, but general possibilities.")
-
-# --- Strategy Recommendations ---
-# Calculate gender_diffs and race_diffs_pos for strategy sorting
-    gender_diffs = []
-    for key in gender_target:
-        target_val = gender_target[key]
-        census_val = US_CENSUS["Gender"].get(key, 0)
-        diff = target_val - census_val
-        if diff > 0:
-            gender_diffs.append((key, diff))
-
-    race_diffs_pos = []
-    for key in race_target:
-        target_val = race_target[key]
-        census_val = US_CENSUS["Race"].get(key, 0)
-        diff = target_val - census_val
-        if diff > 0:
-            race_diffs_pos.append((key, diff))
-st.markdown("---")
-st.header(f"Strategy Recommendations For {disease}")
-st.caption("🔻 Ordered by largest to smallest gap")
-if disease == "Alzheimer's":
-    combined_diffs = gender_diffs + race_diffs_pos
-    combined_diffs_sorted = sorted(combined_diffs, key=lambda x: -x[1])
-
-    for key, diff in combined_diffs_sorted:
-        # Match estimated ratio from earlier section
-        ratio_text = next((f"To reach target enrollment numbers, approximately {ratio:.1%} of eligible {key} individuals must be screened." for k, _, ratio in estimated_screens_sorted if k == key), None)
-
-        if key == "Female":
-            st.markdown("**Female:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Connect with research registries and women’s health organizations.")
-            st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
-
-        elif key == "Male":
-            st.markdown("**Male:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Address stigma and increase awareness around cognitive screening.")
-
-        elif key == "Black, NH":
-            st.markdown("**Black, NH:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Avoid or reassess the need use of CDR screening and logical memory scoring to improve inclusivity.")
-            st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
-
-        elif key == "Hispanic":
-            st.markdown("**Hispanic:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers.")
-            st.markdown("- Provide culturally sensitive materials and Spanish-speaking resources.")
-            st.markdown("- Combat stigma through education and myth-busting outreach.")
-
-        elif key == "Asian, NH":
-            st.markdown("**Asian, NH:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Emphasize how Alzheimer's differs from normal aging to improve detection and participation.")
-
-        elif key == "AIAN, NH":
-            st.markdown("**AIAN, NH:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Use community-based events to build trust.")
-            st.markdown("- Offer transportation support and involve tribal health leaders.")
-
-        elif key == "NHPI, NH":
-            st.markdown("**NHPI, NH:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Incorporate family-based and holistic outreach models.")
-            st.markdown("- Highlight research as a tool for long-term community wellness.")
-
-        elif key == "Other":
-            st.markdown("**Other:**")
-            if ratio_text: st.caption(ratio_text)
-            st.markdown("- Apply personalized outreach through local community and faith groups.")
-            st.markdown("- Translate materials and provide multilingual staff if needed.")
-
-        elif key == "White, NH":
-            st.markdown("**White, NH:**")
-            if ratio_text:
-                st.caption(ratio_text)
-            st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")
-            
-
+        col_race, col_fail = st.columns([3, 2])
+        with col_race:
+            val = adjustable_input(f"{key} (%)", value)
+        with col_fail:
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        race_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val

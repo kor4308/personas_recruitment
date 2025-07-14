@@ -140,11 +140,11 @@ with col1:
 
     with col_dis:
         st.markdown(f"**{disease} Epidemiology - Gender**")
-        st.caption("Numbers from Alzheimer's Association (2023). AIAN and NHPI not included in report, so from internet.")
+        st.caption("Numbers from Alzheimer's Association (2023)")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} with {disease}")
+            st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
 
         st.markdown(f"**{disease} Epidemiology - Race**")
         for key, value in target["Race"].items():

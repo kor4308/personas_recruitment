@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import math
 
 st.set_page_config(layout="wide")
 
@@ -132,7 +133,7 @@ with col1:
             st.text(f"{key}: {value}%")
             st.caption(f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease")
 
-        st.markdown(f"**{disease} Disease Population**")
+        st.markdown(f"**{disease} (AD) Population**" if disease == "Alzheimer's" else f"**{disease} Disease Population**")
         for key, value in target["Race"].items():
             count = int((value / 100) * total_disease_pop)
             st.text(f"{key}: {value}%")
@@ -167,7 +168,7 @@ with col3:
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
-        screened_needed = int(target_n * (1 + fail_rate) + 0.9999)
+        screened_needed = math.ceil(target_n * (1 + fail_rate))
         eligible_pop = int((value / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
@@ -177,7 +178,7 @@ with col3:
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
-        screened_needed = int(target_n * (1 + fail_rate) + 0.9999)
+        screened_needed = math.ceil(target_n * (1 + fail_rate))
         eligible_pop = int((value / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")

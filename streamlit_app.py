@@ -1,3 +1,4 @@
+# 💡 Full updated Streamlit app with screen fail as percentage
 import streamlit as st
 import pandas as pd
 
@@ -69,22 +70,58 @@ BIPOLAR_TARGET = {
     }
 }
 
-# --- Title ---
-st.title("\ud83c\udfaf US vs Target Demographic Comparator")
+# --- Prevalence and Screen Fail ---
+DISEASE_PREVALENCE = {
+    "Alzheimer's": {
+        "overall": 0.103,
+        "Gender": {"Female": 0.12, "Male": 0.086},
+        "Race": {
+            "White, NH": 0.08, "Black, NH": 0.14, "Hispanic": 0.11,
+            "Asian, NH": 0.06, "AIAN, NH": 0.07, "NHPI, NH": 0.07, "Other": 0.07
+        },
+        "screen_fail": {
+            "Female": 0.3, "Male": 0.2, "White, NH": 0.2, "Black, NH": 0.4,
+            "Hispanic": 0.35, "Asian, NH": 0.3, "AIAN, NH": 0.3, "NHPI, NH": 0.3, "Other": 0.3
+        }
+    },
+    "Schizophrenia": {
+        "overall": 0.01,
+        "Gender": {"Female": 0.008, "Male": 0.012},
+        "Race": {
+            "White, NH": 0.007, "Black, NH": 0.015, "Hispanic": 0.012,
+            "Asian, NH": 0.008, "AIAN, NH": 0.009, "NHPI, NH": 0.009, "Other": 0.01
+        },
+        "screen_fail": {
+            "Female": 0.25, "Male": 0.2, "White, NH": 0.2, "Black, NH": 0.25,
+            "Hispanic": 0.25, "Asian, NH": 0.25, "AIAN, NH": 0.25, "NHPI, NH": 0.25, "Other": 0.25
+        }
+    },
+    "Bipolar Disorder": {
+        "overall": 0.03,
+        "Gender": {"Female": 0.032, "Male": 0.028},
+        "Race": {
+            "White, NH": 0.028, "Black, NH": 0.032, "Hispanic": 0.03,
+            "Asian, NH": 0.025, "AIAN, NH": 0.03, "NHPI, NH": 0.03, "Other": 0.03
+        },
+        "screen_fail": {
+            "Female": 0.25, "Male": 0.25, "White, NH": 0.25, "Black, NH": 0.25,
+            "Hispanic": 0.25, "Asian, NH": 0.25, "AIAN, NH": 0.25, "NHPI, NH": 0.25, "Other": 0.25
+        }
+    }
+}
 
-# --- Dropdowns ---
+# --- Page Title ---
+st.title("🎯 US vs Target Demographic Comparator")
+
+# --- Inputs ---
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
-
 age_group = None
 if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
-# --- Column Layout ---
-col1, col2, col3 = st.columns([1, 1, 1])
-
-# --- Determine Target ---
+# --- Target Demographics ---
 if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -94,70 +131,24 @@ elif disease == "Schizophrenia":
 else:
     target = US_CENSUS
 
-# --- Functions ---
-def adjustable_input(label, default):
-    return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=f"input_{label}")
-
-# --- Gender Section ---
-if disease == "Alzheimer's" and age_group:
-    if age_group == "65+":
-        US_TOTAL_POP = 55792501
-        current_us = US_65PLUS
-    else:
-        US_TOTAL_POP = 342_000_000
-        current_us = US_CENSUS
+# --- Choose US Pop Group ---
+if disease == "Alzheimer's" and age_group == "65+":
+    US_TOTAL_POP = 55792501
+    current_us = US_65PLUS
 else:
     US_TOTAL_POP = 342_000_000
     current_us = US_CENSUS
 
-# --- Disease Prevalence ---
-DISEASE_PREVALENCE = {
-    "Alzheimer's": {
-        "overall": 0.103,
-        "Gender": {"Female": 0.12, "Male": 0.086},
-        "Race": {
-            "White, NH": 0.08,
-            "Black, NH": 0.14,
-            "Hispanic": 0.11,
-            "Asian, NH": 0.06,
-            "AIAN, NH": 0.07,
-            "NHPI, NH": 0.07,
-            "Other": 0.07
-        },
-        "screen_fail": {"Female": 0.3, "Male": 0.2, "White, NH": 0.2, "Black, NH": 0.4, "Hispanic": 0.35, "Asian, NH": 0.3, "AIAN, NH": 0.3, "NHPI, NH": 0.3, "Other": 0.3}
-    },
-    "Schizophrenia": {
-        "overall": 0.01,
-        "Gender": {"Female": 0.008, "Male": 0.012},
-        "Race": {
-            "White, NH": 0.007,
-            "Black, NH": 0.015,
-            "Hispanic": 0.012,
-            "Asian, NH": 0.008,
-            "AIAN, NH": 0.009,
-            "NHPI, NH": 0.009,
-            "Other": 0.01
-        },
-        "screen_fail": {"Female": 0.25, "Male": 0.2, "White, NH": 0.2, "Black, NH": 0.25, "Hispanic": 0.25, "Asian, NH": 0.25, "AIAN, NH": 0.25, "NHPI, NH": 0.25, "Other": 0.25}
-    },
-    "Bipolar Disorder": {
-        "overall": 0.03,
-        "Gender": {"Female": 0.032, "Male": 0.028},
-        "Race": {
-            "White, NH": 0.028,
-            "Black, NH": 0.032,
-            "Hispanic": 0.03,
-            "Asian, NH": 0.025,
-            "AIAN, NH": 0.03,
-            "NHPI, NH": 0.03,
-            "Other": 0.03
-        },
-        "screen_fail": {"Female": 0.25, "Male": 0.25, "White, NH": 0.25, "Black, NH": 0.25, "Hispanic": 0.25, "Asian, NH": 0.25, "AIAN, NH": 0.25, "NHPI, NH": 0.25, "Other": 0.25}
-    }
-}
+# --- Function for adjustable input ---
+def adjustable_input(label, default):
+    return st.number_input(label, min_value=0.0, max_value=100.0, value=float(default), step=0.1, key=f"input_{label}")
 
-# --- Display Gender Census and Target ---
+# --- Layout ---
+col1, col2, col3 = st.columns([1, 1, 1])
+
+# === GENDER SECTION ===
 st.subheader("Gender Comparison")
+
 with col1:
     st.markdown("**US Census Gender Demographics**")
     st.caption(f"Total Population: {US_TOTAL_POP:,}")
@@ -171,9 +162,8 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
-    total_enroll_gender = st.markdown(f"**Gender targets for {disease}**")
+    st.markdown(f"**Gender targets for {disease}**")
     total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll_target")
-    st.caption("These demographic targets are not validated.")
     gender_target = {}
     total_gender = 0
     for key, value in target["Gender"].items():
@@ -181,7 +171,8 @@ with col2:
         with col_gender:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100, step=1.0, key=f"sf_gender_{key}")
+            default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_gender_{key}")
         gender_target[key] = val
         DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
         total_gender += val
@@ -200,22 +191,21 @@ with col3:
         st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
         st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
 
-# --- Race Comparison Section ---
+# === RACE SECTION ===
 st.subheader("Race Comparison")
+
 with col1:
     st.markdown("**US Census Race Demographics**")
     for key, value in current_us["Race"].items():
         st.text(f"{key}: {value}%")
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         st.caption(f"Estimated prevalence among {key}: {prevalence * 100:.1f}%")
-
     st.markdown(f"**Disease epidemiology among {disease} based on race:**")
     for key, value in target["Race"].items():
         st.text(f"{key}: {value}%")
 
 with col2:
     st.markdown(f"**Race targets for {disease}**")
-    st.caption("These demographic targets are not validated.")
     race_target = {}
     total_race = 0
     for key, value in target["Race"].items():
@@ -223,7 +213,8 @@ with col2:
         with col_race:
             val = adjustable_input(f"{key} (%)", value)
         with col_fail:
-            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100, step=1.0, key=f"sf_race_{key}")
+            default_fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25) * 100
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=default_fail, step=1.0, key=f"sf_race_{key}")
         race_target[key] = val
         DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
         total_race += val

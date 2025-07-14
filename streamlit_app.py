@@ -183,7 +183,7 @@ with col3:
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = 1 - (DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5))
+        fail_rate = 1 - (100 - st.session_state.get(f"sf_gender_{key}", 100)) / 100
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
@@ -193,7 +193,7 @@ with col3:
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5)
+        fail_rate = 1 - st.session_state.get(f"sf_race_{key}", 100) / 100
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")

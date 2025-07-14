@@ -168,6 +168,17 @@ with col2:
         DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
+    st.markdown(f"**Demographic targets for {disease}**")
+    st.caption("These demographic targets are not validated.")
+    for key, value in target["Race"].items():
+        col_race, col_fail = st.columns([3, 2])
+        with col_race:
+            val = adjustable_input(key, value)
+        with col_fail:
+            fail_val = st.number_input(f"Screen Fail % ({key})", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        race_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+
 with col3:
     st.markdown("**📊 Estimated Quantity needed to screen to reach target**")
     estimated_screens = []
@@ -230,6 +241,22 @@ elif disease == "Bipolar Disorder":
         st.caption("Note: These are not informed recommendations specific to bipolar disorder, but general possibilities.")
 
 # --- Strategy Recommendations ---
+# Calculate gender_diffs and race_diffs_pos for strategy sorting
+    gender_diffs = []
+    for key in gender_target:
+        target_val = gender_target[key]
+        census_val = US_CENSUS["Gender"].get(key, 0)
+        diff = target_val - census_val
+        if diff > 0:
+            gender_diffs.append((key, diff))
+
+    race_diffs_pos = []
+    for key in race_target:
+        target_val = race_target[key]
+        census_val = US_CENSUS["Race"].get(key, 0)
+        diff = target_val - census_val
+        if diff > 0:
+            race_diffs_pos.append((key, diff))
 st.markdown("---")
 st.header(f"Strategy Recommendations For {disease}")
 st.caption("🔻 Ordered by largest to smallest gap")

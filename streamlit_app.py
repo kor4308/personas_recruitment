@@ -61,7 +61,7 @@ DISEASE_PREVALENCE = {
             "Asian, NH": 0.06, "AIAN, NH": 0.07, "NHPI, NH": 0.07, "Other": 0.07
         },
         "screen_fail": {
-            "Female": 0.6, "Male": 0.3, "White, NH": 0.2,
+            "Female": 0.7, "Male": 0.3, "White, NH": 0.2,
             "Black, NH": 0.6, "Hispanic": 0.65, "Asian, NH": 0.6,
             "AIAN, NH": 0.45, "NHPI, NH": 0.65, "Other": 0.56
         }
@@ -153,6 +153,7 @@ with col1:
             st.caption(f"~{count:,} {key} individuals with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if disease == "Alzheimer's" and key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
 
 with col2:
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     st.markdown(f"**Target Enrollment by Gender for {disease}**")
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     total_gender_pct = 0
@@ -180,21 +181,48 @@ with col2:
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    gender_screen_data = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
-        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")
+        gender_screen_data.append((key, screen_percent, int(screened_needed)))
+
+    gender_screen_data.sort(key=lambda x: x[1], reverse=True)
+    for key, screen_percent, screened_needed in gender_screen_data:
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)
+")
+        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    race_screen_data = []
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = 1 - st.session_state.get(f"sf_race_{key}", 100) / 100
+        fail_rate = 1 - (st.session_state.get(f"sf_race_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        st.markdown(f"{key}: {int(screened_needed):,} ({screen_percent:.3f}%)")
-        st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} individuals must be screened.")
+        race_screen_data.append((key, screen_percent, int(screened_needed)))
+
+    race_screen_data.sort(key=lambda x: x[1], reverse=True)
+    for key, screen_percent, screened_needed in race_screen_data:
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)
+")
+        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
+
+    # Bar chart side-by-side
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    col_bar1, col_bar2 = st.columns(2)
+
+    with col_bar1:
+        st.markdown("**Bar Chart - Gender Screening %**")
+        df_gender = pd.DataFrame(gender_screen_data, columns=["Gender", "Screen %", "Needed"])
+        st.bar_chart(df_gender.set_index("Gender")["Screen %"])
+
+    with col_bar2:
+        st.markdown("**Bar Chart - Race Screening %**")
+        df_race = pd.DataFrame(race_screen_data, columns=["Race", "Screen %", "Needed"])
+        st.bar_chart(df_race.set_index("Race")["Screen %"])

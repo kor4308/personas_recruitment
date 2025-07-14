@@ -179,6 +179,7 @@ with col2:
 
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
@@ -189,6 +190,7 @@ with col3:
         st.caption(f"To reach target enrollment numbers, approximately {screen_percent:.3f}% of eligible {key} {disease} patients must be screened.")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
+st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population)
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)

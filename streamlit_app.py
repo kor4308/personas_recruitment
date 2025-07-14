@@ -145,7 +145,8 @@ with col1:
             st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
 st.markdown("<br><br><br>", unsafe_allow_html=True)
 
-            st.markdown(f"**{disease} Disease Population - Race**")
+            with col_dis:
+    st.markdown(f"**{disease} Disease Population - Race**")
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)

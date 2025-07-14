@@ -156,13 +156,14 @@ with col2:
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail, step=1.0, key=f"sf_race_{key}")
 
 # --- Column 3: Output ---
+show_calc = st.checkbox("Show full calculation details for transparency")
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
     st.caption("⬆️ Ordered by greatest screening burden relative to population with disease")
     gender_results = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
-        eligible_pop = (US_TOTAL_POP * (current_us["Gender" if 'gender' in key.lower() else "Race"][key] / 100)) * (total_disease_pop / US_TOTAL_POP)
+        eligible_pop = total_disease_pop * (value / 100)
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         eligible_pop = total_disease_pop * (value / 100)
@@ -171,8 +172,13 @@ with col3:
 
     gender_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in gender_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)" )
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
+        if show_calc:
+            st.caption(f"→ target_n = {total_enroll} × {target[key]}% = {target_n:.1f}")
+            st.caption(f"→ screen_fail = {fail_rate:.2%}, screened_needed = {target_n:.1f} / (1 - {fail_rate:.2f}) = {screened_needed:.1f}")
+            st.caption(f"→ eligible_pop = {total_disease_pop} × {value}% = {eligible_pop:.1f}")
+            st.caption(f"→ screened_needed / eligible_pop = {screened_needed:.1f} / {eligible_pop:.1f} = {screen_percent:.3f}%")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
     st.caption("⬆️ Ordered by greatest screening burden relative to population with disease")
@@ -187,5 +193,10 @@ with col3:
 
     race_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in race_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)" )
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
+        if show_calc:
+            st.caption(f"→ target_n = {total_enroll} × {target[key]}% = {target_n:.1f}")
+            st.caption(f"→ screen_fail = {fail_rate:.2%}, screened_needed = {target_n:.1f} / (1 - {fail_rate:.2f}) = {screened_needed:.1f}")
+            st.caption(f"→ eligible_pop = {total_disease_pop} × {value}% = {eligible_pop:.1f}")
+            st.caption(f"→ screened_needed / eligible_pop = {screened_needed:.1f} / {eligible_pop:.1f} = {screen_percent:.3f}%")

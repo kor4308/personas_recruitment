@@ -16,6 +16,7 @@ SCHIZOPHRENIA_TARGET = {
         "Other": 5.0
     }
 }
+
 US_CENSUS = {
     "Gender": {"Female": 50.5, "Male": 49.5},
     "Race": {
@@ -26,6 +27,19 @@ US_CENSUS = {
         "AIAN, NH": 0.7,
         "NHPI, NH": 0.2,
         "Other": 1.8
+    }
+}
+
+US_65PLUS = {
+    "Gender": {"Female": 50.9, "Male": 49.1},
+    "Race": {
+        "Hispanic": 8.8,
+        "White, NH": 76.6,
+        "Black, NH": 9.2,
+        "Asian, NH": 4.5,
+        "AIAN, NH": 0.7,
+        "NHPI, NH": 0.1,
+        "Other": 3.4
     }
 }
 
@@ -64,7 +78,7 @@ disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Sc
 
 age_group = None
 if disease == "Alzheimer's":
-    age_group = st.selectbox("Select Age Inclusion Criteria", ["60+", "70+", "80+"])
+    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
 # --- Column Layout ---
@@ -86,14 +100,15 @@ def adjustable_input(label, default):
 
 # --- Gender Section ---
 if disease == "Alzheimer's" and age_group:
-    if age_group == "60+":
-        US_TOTAL_POP = 75000000
-    elif age_group == "70+":
-        US_TOTAL_POP = 45000000
-    elif age_group == "80+":
-        US_TOTAL_POP = 20000000
+    if age_group == "65+":
+        US_TOTAL_POP = 60000000
+        current_us = US_65PLUS
+    else:
+        US_TOTAL_POP = 342_000_000
+        current_us = US_CENSUS
 else:
     US_TOTAL_POP = 342_000_000
+    current_us = US_CENSUS
 
 # --- Disease Prevalence ---
 DISEASE_PREVALENCE = {
@@ -144,9 +159,9 @@ DISEASE_PREVALENCE = {
 # --- Display Gender Census and Target ---
 st.subheader("Gender Comparison")
 with col1:
-    st.markdown("**US Census (2023) Gender Demographics**")
+    st.markdown("**US Census Gender Demographics**")
     st.caption(f"Total Population: {US_TOTAL_POP:,}")
-    for key, value in US_CENSUS["Gender"].items():
+    for key, value in current_us["Gender"].items():
         st.text(f"{key}: {value}%")
 
 with col2:

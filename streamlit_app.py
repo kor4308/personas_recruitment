@@ -163,6 +163,8 @@ with col1:
     st.caption(f"Total Population: {US_TOTAL_POP:,}")
     for key, value in current_us["Gender"].items():
         st.text(f"{key}: {value}%")
+        prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
+        st.caption(f"Estimated prevalence among {key}: {prevalence * 100:.1f}%")
 
 with col2:
     total_enroll_gender = st.markdown(f"**Gender targets for {disease}**")
@@ -193,6 +195,7 @@ with col3:
         gender_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(gender_estimates, key=lambda x: -x[2]):
         st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+        st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
 
 # --- Race Comparison Section ---
 st.subheader("Race Comparison")
@@ -200,6 +203,8 @@ with col1:
     st.markdown("**US Census Race Demographics**")
     for key, value in current_us["Race"].items():
         st.text(f"{key}: {value}%")
+        prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
+        st.caption(f"Estimated prevalence among {key}: {prevalence * 100:.1f}%")
 
 with col2:
     st.markdown(f"**Race targets for {disease}**")
@@ -229,3 +234,4 @@ with col3:
         race_estimates.append((key, est_target_n, percentage))
     for key, est_target_n, percentage in sorted(race_estimates, key=lambda x: -x[2]):
         st.markdown(f"{key}: {int(est_target_n):,} ({percentage:.1f}%) to screen")
+        st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")

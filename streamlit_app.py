@@ -184,15 +184,15 @@ with col2:
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
+    gender_estimates = []
     for key, val in gender_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
         est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
-        st.markdown(f"**{key}**: {int(est_target_n):,} to screen")
         percentage = (est_target_n / US_TOTAL_POP) * 100
-        st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
-    percentage = (est_target_n / US_TOTAL_POP) * 100
-    st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
+        gender_estimates.append((key, est_target_n, percentage))
+    for key, est_target_n, percentage in sorted(gender_estimates, key=lambda x: -x[2]):
+        st.markdown(f"**{key}**: {int(est_target_n):,} ({percentage:.1f}%) to screen")
 
 # --- Race Comparison Section ---
 st.subheader("Race Comparison")
@@ -220,8 +220,12 @@ with col2:
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
+    race_estimates = []
     for key, val in race_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
         est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
-        st.markdown(f"**{key}**: {int(est_target_n):,} to screen")
+        percentage = (est_target_n / US_TOTAL_POP) * 100
+        race_estimates.append((key, est_target_n, percentage))
+    for key, est_target_n, percentage in sorted(race_estimates, key=lambda x: -x[2]):
+        st.markdown(f"**{key}**: {int(est_target_n):,} ({percentage:.1f}%) to screen")

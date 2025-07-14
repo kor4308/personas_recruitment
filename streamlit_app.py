@@ -267,12 +267,10 @@ if disease == "Alzheimer's":
 
         elif key == "White, NH":
             st.markdown("**White, NH:**")
-            if ratio_text: st.caption(ratio_text)
+            if ratio_text:
+                st.caption(ratio_text)
             st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")
             st.markdown("**White, NH:**")
         if ratio_text: st.caption(ratio_text, help=None)
             st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")
-elif key == "White, NH":
-            st.markdown("**White, NH:**")
-            st.markdown("- Highlight inclusive research messaging that appeals to broad audiences.")
-            st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")
+

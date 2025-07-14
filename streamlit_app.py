@@ -217,46 +217,58 @@ if disease == "Alzheimer's":
     for key, diff in combined_diffs_sorted:
         # Match estimated ratio from earlier section
         ratio_text = next((f"To reach target enrollment numbers, approximately {ratio:.1%} of eligible {key} individuals must be screened." for k, _, ratio in estimated_screens_sorted if k == key), None)
+
         if key == "Female":
             st.markdown("**Female:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Connect with research registries and women’s health organizations.")
             st.markdown("- Provide resources and scheduling flexibility for women in caregiving roles.")
+
         elif key == "Male":
             st.markdown("**Male:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Address stigma and increase awareness around cognitive screening.")
+
         elif key == "Black, NH":
             st.markdown("**Black, NH:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Avoid or reassess the need use of CDR screening and logical memory scoring to improve inclusivity.")
             st.markdown("- Offer resources to support nonspousal study partners (hybrid visits, productive workshops).")
+
         elif key == "Hispanic":
             st.markdown("**Hispanic:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers.")
             st.markdown("- Provide culturally sensitive materials and Spanish-speaking resources.")
             st.markdown("- Combat stigma through education and myth-busting outreach.")
+
         elif key == "Asian, NH":
             st.markdown("**Asian, NH:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Emphasize how Alzheimer's differs from normal aging to improve detection and participation.")
+
         elif key == "AIAN, NH":
             st.markdown("**AIAN, NH:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Use community-based events to build trust.")
             st.markdown("- Offer transportation support and involve tribal health leaders.")
+
         elif key == "NHPI, NH":
             st.markdown("**NHPI, NH:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Incorporate family-based and holistic outreach models.")
             st.markdown("- Highlight research as a tool for long-term community wellness.")
+
         elif key == "Other":
             st.markdown("**Other:**")
-        if ratio_text: st.caption(ratio_text, help=None)
+            if ratio_text: st.caption(ratio_text)
             st.markdown("- Apply personalized outreach through local community and faith groups.")
             st.markdown("- Translate materials and provide multilingual staff if needed.")
+
         elif key == "White, NH":
+            st.markdown("**White, NH:**")
+            if ratio_text: st.caption(ratio_text)
+            st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")
             st.markdown("**White, NH:**")
         if ratio_text: st.caption(ratio_text, help=None)
             st.markdown("- Collaborate with primary care and memory clinics in suburban and rural areas.")

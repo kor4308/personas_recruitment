@@ -132,7 +132,7 @@ with col1:
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
-            st.caption(f"~{count:,} {key} individuals")
+            st.caption(f"~{count:,} {key} individuals in the United States")
 
     with col_dis:
         st.markdown(f"**{disease} Disease Population**")

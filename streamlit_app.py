@@ -157,10 +157,12 @@ with col2:
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     total_gender_pct = 0
     for key, value in target["Gender"].items():
-        st.markdown(f"**{key} (%)**")
-        val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
-        fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
-        fail_val = st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail_val, step=1.0, key=f"sf_gender_{key}")
+        cols = st.columns([1, 1])
+        with cols[0]:
+            val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        with cols[1]:
+            fail_val = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            fail_val = st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail_val, step=1.0, key=f"sf_gender_{key}")
         total_gender_pct += val
     st.markdown(f"**Total: {total_gender_pct:.1f}%**")
 

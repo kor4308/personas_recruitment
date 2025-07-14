@@ -121,17 +121,15 @@ with col1:
 
     col_us, col_dis = st.columns(2)
     with col_us:
-        st.markdown("**2023 US Census - Gender**")
+        st.markdown("**2023 US Census Population - Gender**")
         st.caption("Numbers directly from US Census (2023)")
-        
-        st.markdown(" \n ")
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
             st.caption(f"~{count:,} individuals")
 
         st.markdown(" \n ")
-        st.markdown("**2023 US Census - Race**")
+        st.markdown("**2023 US Census - Race Breakdown**")
         st.markdown(" \n ")
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
@@ -150,7 +148,7 @@ with col1:
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} with {disease}")
+            st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
 
 with col2:
     st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")

@@ -143,13 +143,19 @@ with col1:
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
-    col_us, col_dis_race = st.columns(2)
-    with col_dis_race:
+        with col_dis:
+        st.markdown(f"**{disease} Disease Population - Gender**")
+        st.caption("Numbers from Alzheimer's Association (2023)")
+        for key, value in target["Gender"].items():
+            st.text(f"{key}: {value}%")
+            count = int((value / 100) * total_disease_pop)
+            st.caption(f"~{count:,} with {disease}" + (" *Not included in report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH"] else ""))
+
         st.markdown(f"**{disease} Disease Population - Race**")
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else ""))
+            st.caption(f"~{count:,} with {disease}" + (" *Not included in Alzheimer's Association report, this is an estimate from internet*" if key in ["AIAN, NH", "NHPI, NH", "Other"] else "")))
 
 with col2:
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)

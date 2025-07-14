@@ -1,7 +1,3 @@
-# ✅ Fix applied: Removed backslash from f-string to avoid SyntaxError
-# 🧠 Explanation: f-string expressions can't contain escaped quotes directly
-# Instead, use dictionary access outside the f-string to avoid escaping issues
-
 import streamlit as st
 import pandas as pd
 
@@ -85,6 +81,9 @@ DISEASE_PREVALENCE = {
         "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     }
 }
+
+# --- Placeholder: col3 will be defined in Streamlit columns layout ---
+col3 = st.container()
 
 # --- Final Column Update ---
 with col3:

@@ -86,7 +86,15 @@ def adjustable_input(label, default):
 
 # --- Gender Section ---
 # Constants
-US_TOTAL_POP = 340_000_000
+if disease == "Alzheimer's" and age_group:
+    if age_group == "60+":
+        US_TOTAL_POP = 75000000
+    elif age_group == "70+":
+        US_TOTAL_POP = 45000000
+    elif age_group == "80+":
+        US_TOTAL_POP = 20000000
+else:
+    US_TOTAL_POP = 342_000_000
 
 # Disease Prevalence Estimates
 DISEASE_PREVALENCE = {
@@ -138,7 +146,7 @@ with col1:
     if disease == "Alzheimer's" and age_group:
         st.markdown(f"**🧓 US Census (2023), Population {age_group}**")
     else:
-        st.markdown("**🧓 US Census (2023), Population 18+**")
+        st.markdown("**US Census (2023) Population Estimate**")
     gender_census = US_CENSUS["Gender"]
     for key, value in gender_census.items():
         st.text(f"{key}: {value}%")

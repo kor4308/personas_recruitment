@@ -141,13 +141,15 @@ with col1:
     with col_dis:
         st.markdown(f"**{disease} US Disease Population**")
         st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")
-        for key, value in target["Gender"].items():
-        target_n = total_enroll * (value / 100)
-        eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
-        screened_needed = target_n / (1 - fail_rate)
-        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        gender_results.append((key, int(screened_needed), screen_percent))
+        total_enroll = st.number_input("Target Enrollment", min_value=1, value=1000)
+        gender_results = []" if disease == "Alzheimer's" else "Numbers not validated (internet)")
+                        for key, value in target["Gender"].items():
+            target_n = total_enroll * (value / 100)
+            eligible_pop = total_disease_pop * (value / 100)
+            fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
+            screened_needed = target_n / (1 - fail_rate)
+            screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+            gender_results.append((key, int(screened_needed), screen_percent))
 
     gender_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in gender_results:

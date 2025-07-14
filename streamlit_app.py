@@ -54,9 +54,15 @@ disease_totals = {
 DISEASE_PREVALENCE = {
     "Alzheimer's": {
         "screen_fail": {
-            "Female": 0.7, "Male": 0.3, "White, NH": 0.2,
-            "Black, NH": 0.6, "Hispanic": 0.65, "Asian, NH": 0.6,
-            "AIAN, NH": 0.45, "NHPI, NH": 0.65, "Other": 0.56
+            "Female": 0.7,
+            "Male": 0.3,
+            "White, NH": 0.7,
+            "Black, NH": 0.65,
+            "Hispanic": 0.7,
+            "Asian, NH": 0.55,
+            "AIAN, NH": 0.5,
+            "NHPI, NH": 0.5,
+            "Other": 0.5
         }
     },
     "Schizophrenia": {
@@ -199,3 +205,4 @@ with col3:
             st.caption(f"→ screen_fail = {fail_rate:.2%}, screened_needed = {target_n:.1f} / (1 - {fail_rate:.2f}) = {screened_needed:.1f}")
             st.caption(f"→ eligible_pop = {total_disease_pop} × {value}% = {eligible_pop:.1f}")
             st.caption(f"→ screened_needed / eligible_pop = {screened_needed:.1f} / {eligible_pop:.1f} = {screen_percent:.3f}%")
+

@@ -162,7 +162,7 @@ with col3:
     gender_results = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
-        eligible_pop = total_disease_pop * (value / 100)
+        eligible_pop = US_TOTAL_POP * (value / 100) * (total_disease_pop / US_TOTAL_POP)
         fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         eligible_pop = total_disease_pop * (value / 100)

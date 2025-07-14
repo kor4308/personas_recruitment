@@ -56,9 +56,9 @@ DISEASE_PREVALENCE = {
         "screen_fail": {
             "Female": 0.7,
             "Male": 0.3,
-            "White, NH": 0.3,
+            "White, NH": 0.25,
             "Black, NH": 0.65,
-            "Hispanic": 0.7,
+            "Hispanic": 0.72,
             "Asian, NH": 0.55,
             "AIAN, NH": 0.63,
             "NHPI, NH": 0.5,

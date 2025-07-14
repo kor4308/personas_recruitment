@@ -135,7 +135,7 @@ with col1:
             st.caption(f"~{count:,} individuals")
 
     with col_dis:
-        st.markdown(f"**{disease} Disease Population - Gender**")
+        st.markdown(f"**{disease} Disease Population**")
         st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")

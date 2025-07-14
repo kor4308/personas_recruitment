@@ -142,7 +142,7 @@ with col1:
         st.markdown(f"**{disease} US Disease Population**")
         st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")
         total_enroll = st.number_input("Target Enrollment", min_value=1, value=1000)
-        gender_results = []" if disease == "Alzheimer's" else "Numbers not validated (internet)")
+        gender_results = []
                         for key, value in target["Gender"].items():
             target_n = total_enroll * (value / 100)
             eligible_pop = total_disease_pop * (value / 100)

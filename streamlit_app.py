@@ -3,6 +3,9 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
+# --- Define columns early ---
+col1, col2, col3 = st.columns(3)
+
 # --- Constants ---
 SCHIZOPHRENIA_TARGET = {
     "Gender": {"Female": 40.0, "Male": 60.0},

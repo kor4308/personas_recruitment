@@ -82,7 +82,7 @@ if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
-if disease == "Alzheimer's":
+if disease == "Alzheimer's Disease":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
     target = BIPOLAR_TARGET
@@ -127,7 +127,7 @@ with col1:
             st.caption(f"~{count:,} {key} individuals in the United States")
 
     with col_dis:
-        st.markdown(f"**{disease} Disease Population**")
+        st.markdown(f"**{disease} (AD) Population**" if disease == "Alzheimer's" else f"**{disease} Disease Population**")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
@@ -137,7 +137,7 @@ with col1:
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} {key} individuals with {disease} Disease" if key in target["Race"] else f"~{count:,} {key} individuals with {disease}")
+            st.caption(f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else (f"~{count:,} {key} individuals with {disease} Disease" if key in target["Race"] else f"~{count:,} {key} individuals with {disease}"))
 
 # --- Column 2: Input ---
 with col2:

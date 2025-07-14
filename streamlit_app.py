@@ -181,7 +181,8 @@ with col2:
             DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
             total_demo += val
     st.markdown(f"**Total: {total_demo:.1f}%**")
-st.markdown(f"**Target Enrollment by Race for {disease}**")
+with col2:
+    st.markdown(f"**Target Enrollment by Race for {disease}**")
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     demo_target = {}
     total_demo = 0

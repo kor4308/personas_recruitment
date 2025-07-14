@@ -160,7 +160,7 @@ with col2:
     for key, value in target["Gender"].items():
         col_gender, col_fail = st.columns([3, 2])
         with col_gender:
-            val = adjustable_input(key, value)
+            val = adjustable_input(f"{key} (%)", value)
         with col_fail:
             fail_val = st.number_input(f"Screen Fail % ({key})", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_gender_{key}")
         gender_target[key] = val
@@ -172,6 +172,8 @@ with col2:
     st.caption("These demographic targets are not validated.")
     for key, value in target["Race"].items():
         col_race, col_fail = st.columns([3, 2])
+        with col_race:
+            val = adjustable_input(f"{key} (%)", value)
         with col_race:
             val = adjustable_input(key, value)
         with col_fail:

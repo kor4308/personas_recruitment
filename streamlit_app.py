@@ -131,14 +131,14 @@ with col1:
         for key, value in target["Gender"].items():
             count = int((value / 100) * total_disease_pop)
             st.text(f"{key}: {value}%")
-            gender_label = f"~{count:,} {key} individuals with Alzheimer's" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease"
+            gender_label = f"~{count:,} {key} individuals with AD" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease"
             st.caption(gender_label)
 
         st.markdown(f"**{disease} (AD) Population**" if disease == "Alzheimer's" else f"**{disease} Disease Population**")
         for key, value in target["Race"].items():
             count = int((value / 100) * total_disease_pop)
             st.text(f"{key}: {value}%")
-            st.caption(f"~{count:,} {key} individuals with Alzheimer's" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease")
+            st.caption(f"~{count:,} {key} individuals with Alzheimer's Disease" if disease == "Alzheimer's" else f"~{count:,} {key} individuals with {disease} Disease")
 
 # --- Column 2 ---
 with col2:
@@ -200,4 +200,4 @@ with col3:
         for category, data in [("Gender", gender_data), ("Race", race_data)]:
             st.markdown(f"**{category} Calculations**")
             for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
-                st.text(f"{key}: target={target_n:.1f}, success_rate={screen_success_rate:.2f}, eligible={eligible_pop}, screened={screened_needed}")
+                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")

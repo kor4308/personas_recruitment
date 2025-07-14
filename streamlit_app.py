@@ -151,8 +151,7 @@ with col1:
 
     gender_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in gender_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)
-")
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
         st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
@@ -168,6 +167,5 @@ with col1:
 
     race_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in race_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)
-")
+        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
         st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} individuals must be screened.")

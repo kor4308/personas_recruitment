@@ -123,17 +123,16 @@ with col1:
     with col_us:
         st.markdown("**US Census - Gender**")
         st.caption("Numbers directly from US Census (2023)")
-        st.markdown("  
-  ")
-        st.markdown("  ")
+        st.markdown(" \n ")
+        st.markdown(" \n ")
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
             st.caption(f"~{count:,} individuals")
 
-        st.markdown("  ")
+        st.markdown(" \n ")
         st.markdown("**US Census - Race**")
-        st.markdown("  ")
+        st.markdown(" \n ")
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)

@@ -86,4 +86,32 @@ DISEASE_PREVALENCE = {
     }
 }
 
-# Continue with correct indentation for remaining columns and logic...
+# Streamlit UI starts here
+st.title("Target Demographics Model")
+
+disease = st.selectbox("Select Disease", list(disease_totals.keys()))
+
+age_group = "65+" if "Alzheimer" in disease else "18+"
+total_disease_key = f"{disease}_{age_group}" if "Alzheimer" in disease else disease
+
+# Get total affected
+total_affected = disease_totals.get(total_disease_key, 0)
+st.subheader(f"Estimated Total {disease} Population: {total_affected:,}")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("### 2023 US Census - Gender")
+    for gender, pct in US_CENSUS["Gender"].items():
+        st.markdown(f"{gender}: {pct}%")
+
+with col2:
+    st.markdown(f"### Target Enrollment by Gender for {disease}")
+    target_dict = ALZHEIMERS_TARGET if "Alzheimer" in disease else SCHIZOPHRENIA_TARGET if "Schizophrenia" in disease else BIPOLAR_TARGET
+    for gender, pct in target_dict["Gender"].items():
+        st.markdown(f"{gender}: {pct}%")
+
+with col3:
+    st.markdown("### Estimated Quantity Needed to Screen - Gender")
+    for gender, pct in target_dict["Gender"].items():
+        st.markdown(f"{gender}: placeholder")

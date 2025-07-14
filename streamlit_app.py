@@ -158,9 +158,14 @@ with col2:
     gender_target = {}
     total_gender = 0
     for key, value in target["Gender"].items():
-        val = adjustable_input(key, value)
+        col_gender, col_fail = st.columns([3, 2])
+        with col_gender:
+            val = adjustable_input(key, value)
+        with col_fail:
+            fail_val = st.number_input(f"Screen Fail % ({key})", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_gender_{key}")
         gender_target[key] = val
         total_gender += val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
     st.markdown(f"**Total: {total_gender:.1f}%**")
 
 with col3:
@@ -179,7 +184,13 @@ with col3:
 
     race_target = {}
     for key, value in target["Race"].items():
-        race_target[key] = value
+        col_race, col_fail = st.columns([3, 2])
+        with col_race:
+            val = adjustable_input(key, value)
+        with col_fail:
+            fail_val = st.number_input(f"Screen Fail % ({key})", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        race_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
 
     for key in race_target:
         pct = race_target[key] / 100

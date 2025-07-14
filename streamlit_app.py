@@ -186,7 +186,7 @@ with col3:
         target_n = total_enroll * (value / 100)
         eligible_pop = (value / 100) * total_disease_pop
         fail_rate = 1 - (st.session_state.get(f"sf_race_{key}", 100) / 100)
-        screened_needed = target_n / (1 - fail_rate)
+        screened_needed = target_n * (1 + fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         race_results.append((key, int(screened_needed), screen_percent))
 

@@ -121,13 +121,13 @@ with col1:
             st.caption(f"~{count:,} {key} individuals")
 
     with col_dis:
-        st.markdown(f"**{disease} Disease Population - Gender**")
+        st.markdown(f"**{disease} Disease Population**")
         for key, value in target["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} {key} individuals with {disease}")
 
-        st.markdown(f"**{disease} Disease Population - Race**")
+        st.markdown(f"**{disease} Disease Population**")
         for key, value in target["Race"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * total_disease_pop)

@@ -101,7 +101,7 @@ def adjustable_input(label, default):
 # --- Gender Section ---
 if disease == "Alzheimer's" and age_group:
     if age_group == "65+":
-        US_TOTAL_POP = 60000000
+        US_TOTAL_POP = 55792501
         current_us = US_65PLUS
     else:
         US_TOTAL_POP = 342_000_000
@@ -165,6 +165,7 @@ with col1:
         st.text(f"{key}: {value}%")
 
 with col2:
+    total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     st.markdown(f"**Gender targets for {disease}**")
     total_enroll_gender = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     st.caption("These demographic targets are not validated.")
@@ -184,12 +185,13 @@ with col2:
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
     st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
-    st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
     for key, val in gender_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Gender"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)
         est_target_n = (val / 100) * US_TOTAL_POP * prevalence * (1 + fail_rate)
         st.markdown(f"**{key}**: {int(est_target_n):,} to screen")
+        percentage = (est_target_n / US_TOTAL_POP) * 100
+        st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
     percentage = (est_target_n / US_TOTAL_POP) * 100
     st.caption(f"To reach target enrollment numbers, approximately {percentage:.1f}% of eligible {key} individuals must be screened.")
 
@@ -217,6 +219,8 @@ with col2:
     st.markdown(f"**Total: {total_race:.1f}%**")
 
 with col3:
+    st.markdown("**Estimated Quantity Needed to Screen to Reach Target**")
+    st.caption("To reach target enrollment numbers, each group's screening estimate is shown below")
     for key, val in race_target.items():
         prevalence = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])
         fail_rate = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25)

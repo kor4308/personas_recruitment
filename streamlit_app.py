@@ -123,11 +123,13 @@ with col1:
     with col_us:
         st.markdown("**US Census - Gender**")
         st.caption("Numbers directly from US Census (2023)")
+        st.markdown("  ")
         for key, value in current_us["Gender"].items():
             st.text(f"{key}: {value}%")
             count = int((value / 100) * US_TOTAL_POP)
             st.caption(f"~{count:,} individuals")
 
+        st.markdown("  ")
         st.markdown("**US Census - Race**")
         for key, value in current_us["Race"].items():
             st.text(f"{key}: {value}%")
@@ -148,8 +150,37 @@ with col1:
             count = int((value / 100) * total_disease_pop)
             st.caption(f"~{count:,} with {disease}")
 
-
+with col2:
     st.markdown(f"**Target Enrollment by Gender and Race for {disease}**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
+    demo_target = {}
+    total_demo = 0
+    import random
+    for category in ["Gender", "Race"]:
+        for key, value in target[category].items():
+            col_demo, col_fail = st.columns([3, 2])
+            with col_demo:
+                val = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"demo_input_{key}")
+            with col_fail:
+                if key == "Female":
+                    fail_val = 60.0
+                elif key == "Male":
+                    fail_val = 30.0
+                elif key == "White, NH":
+                    fail_val = 20.0
+                elif key == "Hispanic":
+                    fail_val = 65.0
+                elif key == "Black, NH":
+                    fail_val = 60.0
+                elif key == "Asian, NH":
+                    fail_val = 60.0
+                else:
+                    fail_val = random.randint(41, 65)
+                fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=100.0, value=fail_val, step=1.0, key=f"sf_demo_{key}")
+            demo_target[key] = val
+            DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val / 100.0
+            total_demo += val
+    st.markdown(f"**Total: {total_demo:.1f}%**")
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
     demo_target = {}
     total_demo = 0

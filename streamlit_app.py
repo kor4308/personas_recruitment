@@ -161,7 +161,11 @@ with col2:
         col_gender, col_fail = st.columns([3, 2])
         with col_gender:
             val = adjustable_input(f"{key} (%)", value)
-                    with col_fail:
+        with col_fail:
+            fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
+        gender_target[key] = val
+        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
+        total_gender += val
             fail_val = st.number_input("Screen Fail %", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
     race_target[key] = val
     DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
@@ -170,7 +174,7 @@ with col2:
     st.markdown(f"**Demographic targets for {disease}**")
 st.caption("These demographic targets are not validated.")
 race_target = {}
-for key, value in target["Race"].items():
+    for key, value in target["Race"].items():
     col_race, col_fail = st.columns([3, 2])
     with col_race:
         val = adjustable_input(f"{key} (%)", value)
@@ -193,16 +197,7 @@ with col3:
         screen_ratio = estimated_screen / total_group_pop if total_group_pop else 0
         estimated_screens.append((key, estimated_screen, screen_ratio))
 
-    race_target = {}
-    for key, value in target["Race"].items():
-        col_race, col_fail = st.columns([3, 2])
-        with col_race:
-            val = adjustable_input(key, value)
-        with col_fail:
-            fail_val = st.number_input(f"Screen Fail % ({key})", min_value=0.0, max_value=1.0, value=DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.25), step=0.01, key=f"sf_race_{key}")
-        race_target[key] = val
-        DISEASE_PREVALENCE[disease]["screen_fail"][key] = fail_val
-
+    
     for key in race_target:
         pct = race_target[key] / 100
         prev = DISEASE_PREVALENCE[disease]["Race"].get(key, DISEASE_PREVALENCE[disease]["overall"])

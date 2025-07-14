@@ -51,15 +51,8 @@ disease_totals = {
     "Bipolar Disorder": 3100000
 }
 
-# --- Disease Prevalence ---
 DISEASE_PREVALENCE = {
     "Alzheimer's": {
-        "overall": 0.103,
-        "Gender": {"Female": 0.12, "Male": 0.086},
-        "Race": {
-            "White, NH": 0.08, "Black, NH": 0.14, "Hispanic": 0.11,
-            "Asian, NH": 0.06, "AIAN, NH": 0.07, "NHPI, NH": 0.07, "Other": 0.07
-        },
         "screen_fail": {
             "Female": 0.7, "Male": 0.3, "White, NH": 0.2,
             "Black, NH": 0.6, "Hispanic": 0.65, "Asian, NH": 0.6,
@@ -67,26 +60,14 @@ DISEASE_PREVALENCE = {
         }
     },
     "Schizophrenia": {
-        "overall": 0.01,
-        "Gender": {"Female": 0.008, "Male": 0.012},
-        "Race": {
-            "White, NH": 0.007, "Black, NH": 0.015, "Hispanic": 0.012,
-            "Asian, NH": 0.008, "AIAN, NH": 0.009, "NHPI, NH": 0.009, "Other": 0.01
-        },
         "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     },
     "Bipolar Disorder": {
-        "overall": 0.03,
-        "Gender": {"Female": 0.032, "Male": 0.028},
-        "Race": {
-            "White, NH": 0.028, "Black, NH": 0.032, "Hispanic": 0.03,
-            "Asian, NH": 0.025, "AIAN, NH": 0.03, "NHPI, NH": 0.03, "Other": 0.03
-        },
         "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     }
 }
 
-# --- Final Column Update ---
+# --- App ---
 st.title("\U0001F3AF US vs Target Demographic Comparator")
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
@@ -117,30 +98,63 @@ else:
     current_us = US_CENSUS
     total_disease_pop = disease_totals.get(disease, US_TOTAL_POP)
 
-col1, col2, col3 = st.columns([1, 1, 1])
+col1, col2, col3 = st.columns(3)
 
+# --- Column 1: Demographics ---
 with col1:
     st.markdown("**Demographics Overview**")
     st.caption(f"Total US Population: {US_TOTAL_POP:,} | Total with {disease}: {total_disease_pop:,}")
 
-    col_us, col_dis = st.columns(2, gap="small")
-    with col_us:
-        st.markdown("**2023 US Census Population - Gender**")
-        st.caption("Numbers directly from US Census (2023)")
-        for key, value in current_us["Gender"].items():
-            st.text(f"{key}: {value}%")
-            count = int((value / 100) * US_TOTAL_POP)
-            st.caption(f"~{count:,} {key} individuals")
+    st.markdown("**2023 US Census Population - Gender**")
+    for key, value in current_us["Gender"].items():
+        st.text(f"{key}: {value}%")
+        count = int((value / 100) * US_TOTAL_POP)
+        st.caption(f"~{count:,} {key} individuals")
 
-        st.markdown("**2023 US Census Population - Race**")
-        for key, value in current_us["Race"].items():
-            st.text(f"{key}: {value}%")
-            count = int((value / 100) * US_TOTAL_POP)
-            st.caption(f"~{count:,} {key} individuals in the United States")
+    st.markdown("**2023 US Census Population - Race**")
+    for key, value in current_us["Race"].items():
+        st.text(f"{key}: {value}%")
+        count = int((value / 100) * US_TOTAL_POP)
+        st.caption(f"~{count:,} {key} individuals")
 
-    with col3:
+    st.markdown(f"**{disease} Disease Population**")
+    for key, value in target["Gender"].items():
+        st.text(f"{key}: {value}%")
+        count = int((value / 100) * total_disease_pop)
+        st.caption(f"~{count:,} {key} individuals with {disease}")
+
+    st.markdown(f"**{disease} Disease Population - Race**")
+    for key, value in target["Race"].items():
+        st.text(f"{key}: {value}%")
+        count = int((value / 100) * total_disease_pop)
+        st.caption(f"~{count:,} {key} individuals with {disease}")
+
+# --- Column 2: Input ---
+with col2:
+    total_enroll = st.number_input("Target Enrollment", min_value=100, max_value=1000000, value=1000, step=100)
+
+    st.markdown("**Target Enrollment by Gender**")
+    for key, default in target["Gender"].items():
+        cols = st.columns([1, 1])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=default, step=0.1, key=f"gender_{key}")
+        with cols[1]:
+            fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail, step=1.0, key=f"sf_gender_{key}")
+
+    st.markdown("**Target Enrollment by Race**")
+    for key, default in target["Race"].items():
+        cols = st.columns([1, 1])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=default, step=0.1, key=f"race_{key}")
+        with cols[1]:
+            fail = DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=100 - fail, step=1.0, key=f"sf_race_{key}")
+
+# --- Column 3: Output ---
+with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
-    st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
+    st.caption("⬆️ Ordered by greatest screening burden relative to population with disease")
     gender_results = []
     for key, value in target["Gender"].items():
         target_n = total_enroll * (value / 100)
@@ -153,15 +167,15 @@ with col1:
     gender_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in gender_results:
         st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
-        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
-    st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
+    st.caption("⬆️ Ordered by greatest screening burden relative to population with disease")
     race_results = []
     for key, value in target["Race"].items():
         target_n = total_enroll * (value / 100)
         eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = 1 - st.session_state.get(f"sf_race_{key}", 100) / 100
+        fail_rate = 1 - (st.session_state.get(f"sf_race_{key}", 100) / 100)
         screened_needed = target_n / (1 - fail_rate)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         race_results.append((key, int(screened_needed), screen_percent))
@@ -169,44 +183,4 @@ with col1:
     race_results.sort(key=lambda x: x[2], reverse=True)
     for key, screened_needed, screen_percent in race_results:
         st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
-        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} individuals must be screened.")
-
-        st.markdown(f"**{disease} Disease Population - Race**")
-        for key, value in target["Race"].items():
-            st.text(f"{key}: {value}%")
-            count = int((value / 100) * total_disease_pop)
-            st.caption(f"~{count:,} {key} individuals with {disease}")
-
-    with col_dis:
-        st.markdown(f"**{disease} US Disease Population**")
-        st.caption("Numbers from Alzheimer's Association (2023)" if disease == "Alzheimer's" else "Numbers not validated (internet)")
-        total_enroll = st.number_input("Target Enrollment", min_value=1, value=1000)
-        gender_results = []
-        for key, value in target["Gender"].items():
-            target_n = total_enroll * (value / 100)
-            eligible_pop = total_disease_pop * (value / 100)
-            fail_rate = 1 - (st.session_state.get(f"sf_gender_{key}", 100) / 100)
-            screened_needed = target_n / (1 - fail_rate)
-            screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-            gender_results.append((key, int(screened_needed), screen_percent))
-
-    gender_results.sort(key=lambda x: x[2], reverse=True)
-    for key, screened_needed, screen_percent in gender_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
-        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} {disease} patients must be screened.")
-
-    st.markdown("**Estimated Quantity Needed to Screen - Race**")
-    st.caption("⬆️ Order is in order of greatest needed recruitment focus for each eligible population")
-    race_results = []
-    for key, value in target["Race"].items():
-        target_n = total_enroll * (value / 100)
-        eligible_pop = total_disease_pop * (value / 100)
-        fail_rate = 1 - st.session_state.get(f"sf_race_{key}", 100) / 100
-        screened_needed = target_n / (1 - fail_rate)
-        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        race_results.append((key, int(screened_needed), screen_percent))
-
-    race_results.sort(key=lambda x: x[2], reverse=True)
-    for key, screened_needed, screen_percent in race_results:
-        st.markdown(f"{key}: {screened_needed:,} (**{screen_percent:.3f}%**)")
-        st.caption(f"To reach target enrollment numbers, approximately **{screen_percent:.3f}%** of eligible {key} individuals must be screened.")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")

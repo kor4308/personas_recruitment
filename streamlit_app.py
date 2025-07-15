@@ -125,46 +125,47 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         for k, v in target["Race"].items():
             st.markdown(f"{k}: {v}%")
 
-# Strategy Recommendations Section
-with col3.expander("Recruitment Strategies for Focus Populations"):
-    recruitment_strategies = {
-        "Female": [
-            "Connect with women's health networks and caregiving support groups",
-            "Partner with community-based organizations that focus on elder care",
-            "Provide flexible study visit schedules or caregiver support"
-        ],
-        "Male": [
-            "Target outreach through male-dominated environments such as sporting events",
-            "Promote messaging around benefitting future generations",
-            "Address stigma around mental health and participation"
-        ],
-        "Black, NH": [
-            "Engage trusted faith-based and civic leaders",
-            "Highlight historical medical distrust and steps taken to ensure ethical practices",
-            "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
-        ],
-        "Hispanic": [
-            "Use Spanish-language materials and bilingual coordinators",
-            "Partner with local Hispanic/Latino organizations and clinics",
-            "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
-        ],
-        "White, NH": [
-            "Collaborate with primary care and memory clinics in suburban and rural areas"
-        ],
-        "AIAN, NH": [
-            "Partner with tribal health clinics and IHS facilities",
-            "Provide culturally competent staff and materials",
-            "Ensure trials accommodate rural residence or travel support"
-        ],
-        "NHPI, NH": [
-            "Engage local community leaders and churches",
-            "Incorporate family-centered decision-making",
-            "Use Pacific Islander liaisons for outreach"
-        ]
-    }
+# --- Recruitment Strategy Section (Now Standalone Below Columns) ---
+st.markdown("---")
+st.header("Recruitment Strategies for Focus Populations")
+recruitment_strategies = {
+    "Female": [
+        "Connect with women's health networks and caregiving support groups",
+        "Partner with community-based organizations that focus on elder care",
+        "Provide flexible study visit schedules or caregiver support"
+    ],
+    "Male": [
+        "Target outreach through male-dominated environments such as sporting events",
+        "Promote messaging around benefitting future generations",
+        "Address stigma around mental health and participation"
+    ],
+    "Black, NH": [
+        "Engage trusted faith-based and civic leaders",
+        "Highlight historical medical distrust and steps taken to ensure ethical practices",
+        "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
+    ],
+    "Hispanic": [
+        "Use Spanish-language materials and bilingual coordinators",
+        "Partner with local Hispanic/Latino organizations and clinics",
+        "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
+    ],
+    "White, NH": [
+        "Collaborate with primary care and memory clinics in suburban and rural areas"
+    ],
+    "AIAN, NH": [
+        "Partner with tribal health clinics and IHS facilities",
+        "Provide culturally competent staff and materials",
+        "Ensure trials accommodate rural residence or travel support"
+    ],
+    "NHPI, NH": [
+        "Engage local community leaders and churches",
+        "Incorporate family-centered decision-making",
+        "Use Pacific Islander liaisons for outreach"
+    ]
+}
 
-    for group, strategies in recruitment_strategies.items():
-        st.markdown(f"**{group}**")
-        for strat in strategies:
-            st.markdown(f"- {strat}")
-        st.markdown("---")
+for group, strategies in recruitment_strategies.items():
+    st.markdown(f"**{group}**")
+    for strat in strategies:
+        st.markdown(f"- {strat}")
+    st.markdown("---")

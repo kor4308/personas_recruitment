@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import math
 
 st.set_page_config(layout="wide")
 
@@ -69,7 +70,6 @@ BIPOLAR_TARGET = {
     }
 }
 
-# Disease totals
 DISEASE_TOTALS = {
     "Alzheimer's_18+": 7100000,
     "Alzheimer's_65+": 6900000,
@@ -77,10 +77,14 @@ DISEASE_TOTALS = {
     "Bipolar Disorder": 3100000
 }
 
-# --- Title ---
+DISEASE_PREVALENCE = {
+    "Alzheimer's": {"screen_fail": {}},
+    "Bipolar Disorder": {"screen_fail": {}},
+    "Schizophrenia": {"screen_fail": {}}
+}
+
 st.title("US vs Target Demographic Comparator")
 
-# --- Dropdowns ---
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
 
@@ -89,10 +93,8 @@ if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
-# --- Column Layout ---
 col1, col2, col3 = st.columns([1, 1, 1])
 
-# --- Determine Target ---
 if disease == "Alzheimer's":
     target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -102,7 +104,6 @@ elif disease == "Schizophrenia":
 else:
     target = US_CENSUS
 
-# --- Gender Section ---
 if disease == "Alzheimer's" and age_group:
     if age_group == "65+":
         US_TOTAL_POP = 55792501
@@ -114,10 +115,15 @@ else:
     US_TOTAL_POP = 342_000_000
     current_us = US_CENSUS
 
-# --- Expandable Sections for All Columns ---
+if disease == "Alzheimer's":
+    pop_key = f"Alzheimer's_{age_group}"
+else:
+    pop_key = disease
+
+total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
+
 with col1.expander("US Demographics and Disease Epidemiology"):
     st.markdown(f"**Total U.S. Population:** {US_TOTAL_POP:,}")
-
     g_col, r_col = st.columns(2)
     with g_col:
         st.subheader("Gender")
@@ -131,10 +137,6 @@ with col1.expander("US Demographics and Disease Epidemiology"):
     if disease in ["Alzheimer's", "Bipolar Disorder", "Schizophrenia"]:
         st.markdown("---")
         st.subheader(f"Disease Epidemiology in {disease} (Estimated)")
-        if disease == "Alzheimer's":
-            pop_key = f"Alzheimer's_{age_group}"
-        else:
-            pop_key = disease
         disease_total = DISEASE_TOTALS.get(pop_key)
         if disease_total:
             st.markdown(f"**Total population with {disease}: {disease_total:,}**")
@@ -145,81 +147,62 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         for k, v in target["Race"].items():
             st.markdown(f"{k}: {v}%")
 
-with col2.expander("Target Enrollment by Group"):
-    st.subheader("Gender")
-    for k, v in target["Gender"].items():
-        count = int((v / 100) * US_TOTAL_POP)
-        st.markdown(f"{k}: {count:,} participants")
-    st.subheader("Race")
-    for k, v in target["Race"].items():
-        count = int((v / 100) * US_TOTAL_POP)
-        st.markdown(f"{k}: {count:,} participants")
+with col2:
+    st.markdown("**Target Enrollment Inputs**")
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100)
 
-with col3.expander("Estimated Quantity Needed to Screen"):
-    st.caption("Assumes 35% screen success rate")
-    SCREEN_RATE = 0.35
-    st.subheader("Gender")
-    for k, v in target["Gender"].items():
-        count = int((v / 100) * US_TOTAL_POP / SCREEN_RATE)
-        st.markdown(f"{k}: {count:,} individuals")
-    st.subheader("Race")
-    for k, v in target["Race"].items():
-        count = int((v / 100) * US_TOTAL_POP / SCREEN_RATE)
-        st.markdown(f"{k}: {count:,} individuals")
+    st.markdown("**Gender Target % and Screen Success**")
+    for key, value in target["Gender"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
 
-# --- Recruitment Strategy Section ---
-st.markdown("---")
-st.header("Recruitment Strategies for Focus Populations")
+    st.markdown("**Race Target % and Screen Success**")
+    for key, value in target["Race"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
 
-recruitment_strategies = {
-    "Female": [
-        "Connect with women's health networks and caregiving support groups",
-        "Partner with community-based organizations that focus on elder care",
-        "Provide flexible study visit schedules or caregiver support"
-    ],
-    "Male": [
-        "Target outreach through male-dominated environments such as sporting events",
-        "Promote messaging around benefitting future generations",
-        "Address stigma around mental health and participation"
-    ],
-    "Black, NH": [
-        "Engage trusted faith-based and civic leaders",
-        "Highlight historical medical distrust and steps taken to ensure ethical practices",
-        "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
-    ],
-    "Hispanic": [
-        "Use Spanish-language materials and bilingual coordinators",
-        "Partner with local Hispanic/Latino organizations and clinics",
-        "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
-    ],
-    "White, NH": [
-        "Collaborate with primary care and memory clinics in suburban and rural areas"
-    ],
-    "AIAN, NH": [
-        "Partner with tribal health clinics and IHS facilities",
-        "Provide culturally competent staff and materials",
-        "Ensure trials accommodate rural residence or travel support"
-    ],
-    "NHPI, NH": [
-        "Engage local community leaders and churches",
-        "Incorporate family-centered decision-making",
-        "Use Pacific Islander liaisons for outreach"
-    ]
-}
+with col3:
+    st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    gender_data = []
+    for key, value in target["Gender"].items():
+        target_n = total_enroll * (value / 100)
+        screen_success_rate = st.session_state.get(f"sf_gender_{key}", 100) / 100
+        screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
+        eligible_pop = int((value / 100) * total_disease_pop)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        gender_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
 
-# Calculate underrepresentation and sort
-race_diffs = []
-for race, target_val in target["Race"].items():
-    us_val = current_us["Race"].get(race, 0)
-    diff = round(target_val - us_val, 1)
-    if diff > 0:
-        race_diffs.append((race, diff))
+    gender_data.sort(key=lambda x: -x[2])
+    for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in gender_data:
+        st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
-race_diffs.sort(key=lambda x: x[1], reverse=True)
+    st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    race_data = []
+    for key, value in target["Race"].items():
+        target_n = total_enroll * (value / 100)
+        screen_success_rate = st.session_state.get(f"sf_race_{key}", 100) / 100
+        screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
+        eligible_pop = int((value / 100) * total_disease_pop)
+        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
+        race_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
 
-# Display strategies in order of greatest disparity
-for race, diff in race_diffs:
-    st.markdown(f"**{race}** — _{diff}% underrepresented_")
-    for strat in recruitment_strategies.get(race, []):
-        st.markdown(f"- {strat}")
-    st.markdown("---")
+    race_data.sort(key=lambda x: -x[2])
+    for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in race_data:
+        st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
+        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
+
+    if st.toggle("Show Calculation Steps"):
+        st.markdown("### Calculation Breakdown")
+        for category, data in [("Gender", gender_data), ("Race", race_data)]:
+            st.markdown(f"**{category} Calculations**")
+            for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
+                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")

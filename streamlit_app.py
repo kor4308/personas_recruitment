@@ -145,6 +145,28 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         for k, v in target["Race"].items():
             st.markdown(f"{k}: {v}%")
 
+with col2.expander("Target Enrollment by Group"):
+    st.subheader("Gender")
+    for k, v in target["Gender"].items():
+        count = int((v / 100) * US_TOTAL_POP)
+        st.markdown(f"{k}: {count:,} participants")
+    st.subheader("Race")
+    for k, v in target["Race"].items():
+        count = int((v / 100) * US_TOTAL_POP)
+        st.markdown(f"{k}: {count:,} participants")
+
+with col3.expander("Estimated Quantity Needed to Screen"):
+    st.caption("Assumes 35% screen success rate")
+    SCREEN_RATE = 0.35
+    st.subheader("Gender")
+    for k, v in target["Gender"].items():
+        count = int((v / 100) * US_TOTAL_POP / SCREEN_RATE)
+        st.markdown(f"{k}: {count:,} individuals")
+    st.subheader("Race")
+    for k, v in target["Race"].items():
+        count = int((v / 100) * US_TOTAL_POP / SCREEN_RATE)
+        st.markdown(f"{k}: {count:,} individuals")
+
 # --- Recruitment Strategy Section ---
 st.markdown("---")
 st.header("Recruitment Strategies for Focus Populations")

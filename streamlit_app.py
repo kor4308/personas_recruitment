@@ -69,6 +69,14 @@ BIPOLAR_TARGET = {
     }
 }
 
+# Disease totals
+DISEASE_TOTALS = {
+    "Alzheimer's_18+": 7100000,
+    "Alzheimer's_65+": 6900000,
+    "Schizophrenia": 3200000,
+    "Bipolar Disorder": 3100000
+}
+
 # --- Title ---
 st.title("US vs Target Demographic Comparator")
 
@@ -109,15 +117,27 @@ else:
 # --- Expandable Sections for All Columns ---
 with col1.expander("US Demographics and Disease Epidemiology"):
     st.markdown(f"**Total U.S. Population:** {US_TOTAL_POP:,}")
-    st.subheader("Gender")
-    for k, v in current_us["Gender"].items():
-        st.markdown(f"{k}: {v}%")
-    st.subheader("Race")
-    for k, v in current_us["Race"].items():
-        st.markdown(f"{k}: {v}%")
-    if disease in target:
-        st.markdown(f"---")
+
+    g_col, r_col = st.columns(2)
+    with g_col:
+        st.subheader("Gender")
+        for k, v in current_us["Gender"].items():
+            st.markdown(f"{k}: {v}%")
+    with r_col:
+        st.subheader("Race")
+        for k, v in current_us["Race"].items():
+            st.markdown(f"{k}: {v}%")
+
+    if disease in ["Alzheimer's", "Bipolar Disorder", "Schizophrenia"]:
+        st.markdown("---")
         st.subheader(f"Disease Epidemiology in {disease} (Estimated)")
+        if disease == "Alzheimer's":
+            pop_key = f"Alzheimer's_{age_group}"
+        else:
+            pop_key = disease
+        disease_total = DISEASE_TOTALS.get(pop_key)
+        if disease_total:
+            st.markdown(f"**Total population with {disease}: {disease_total:,}**")
         st.markdown("**Gender:**")
         for k, v in target["Gender"].items():
             st.markdown(f"{k}: {v}%")
@@ -125,9 +145,10 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         for k, v in target["Race"].items():
             st.markdown(f"{k}: {v}%")
 
-# --- Recruitment Strategy Section (Now Standalone Below Columns) ---
+# --- Recruitment Strategy Section ---
 st.markdown("---")
 st.header("Recruitment Strategies for Focus Populations")
+
 recruitment_strategies = {
     "Female": [
         "Connect with women's health networks and caregiving support groups",
@@ -164,8 +185,19 @@ recruitment_strategies = {
     ]
 }
 
-for group, strategies in recruitment_strategies.items():
-    st.markdown(f"**{group}**")
-    for strat in strategies:
+# Calculate underrepresentation and sort
+race_diffs = []
+for race, target_val in target["Race"].items():
+    us_val = current_us["Race"].get(race, 0)
+    diff = round(target_val - us_val, 1)
+    if diff > 0:
+        race_diffs.append((race, diff))
+
+race_diffs.sort(key=lambda x: x[1], reverse=True)
+
+# Display strategies in order of greatest disparity
+for race, diff in race_diffs:
+    st.markdown(f"**{race}** — _{diff}% underrepresented_")
+    for strat in recruitment_strategies.get(race, []):
         st.markdown(f"- {strat}")
     st.markdown("---")

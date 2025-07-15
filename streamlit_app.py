@@ -122,9 +122,55 @@ else:
 
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
 
-total_enroll = st.session_state.get("total_enroll", 1000)  # Ensure fallback for total_enroll
+with col1.expander("US Demographics and Disease Epidemiology"):
+    st.markdown(f"**Total U.S. Population:** {US_TOTAL_POP:,}")
+    g_col, r_col = st.columns(2)
+    with g_col:
+        st.subheader("Gender")
+        for k, v in current_us["Gender"].items():
+            st.markdown(f"{k}: {v}%")
+    with r_col:
+        st.subheader("Race")
+        for k, v in current_us["Race"].items():
+            st.markdown(f"{k}: {v}%")
 
-with col3:
+    if disease in ["Alzheimer's", "Bipolar Disorder", "Schizophrenia"]:
+        st.markdown("---")
+        st.subheader(f"Disease Epidemiology in {disease} (Estimated)")
+        disease_total = DISEASE_TOTALS.get(pop_key)
+        if disease_total:
+            st.markdown(f"**Total population with {disease}: {disease_total:,}**")
+        st.markdown("**Gender:**")
+        for k, v in target["Gender"].items():
+            st.markdown(f"{k}: {v}%")
+        st.markdown("**Race:**")
+        for k, v in target["Race"].items():
+            st.markdown(f"{k}: {v}%")
+
+with col2.expander("Target Enrollment Inputs"):
+    total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll")
+
+    st.markdown("**Gender Target % and Screen Success**")
+    for key, value in target["Gender"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
+
+    st.markdown("**Race Target % and Screen Success**")
+    for key, value in target["Race"].items():
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        with cols[1]:
+            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
+
+with col3.expander("Estimated Quantity Needed to Screen"):
+    total_enroll = st.session_state.get("total_enroll", 1000)
+
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
     gender_data = []
     for key in target["Gender"]:

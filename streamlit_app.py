@@ -122,6 +122,8 @@ else:
 
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
 
+total_enroll = st.session_state.get("total_enroll", 1000)  # Ensure fallback for total_enroll
+
 with col3:
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
     gender_data = []
@@ -130,7 +132,7 @@ with col3:
         target_n = total_enroll * (pct / 100)
         screen_success_rate = st.session_state.get(f"sf_gender_{key}", 100) / 100
         screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
-        eligible_pop = int((target["Gender"][key] / 100) * total_disease_pop)
+        eligible_pop = int((pct / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         gender_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
 
@@ -146,7 +148,7 @@ with col3:
         target_n = total_enroll * (pct / 100)
         screen_success_rate = st.session_state.get(f"sf_race_{key}", 100) / 100
         screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
-        eligible_pop = int((target["Race"][key] / 100) * total_disease_pop)
+        eligible_pop = int((pct / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         race_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
 

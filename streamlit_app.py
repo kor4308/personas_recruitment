@@ -112,7 +112,7 @@ if disease == "Alzheimer's":
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
-# COL 1 FIRST
+# COL 1
 with col1.expander("US Demographics and Disease Epidemiology"):
     st.markdown("### 2023 US Census")
     st.caption("Information in this section is from the 2023 US Census.")
@@ -150,6 +150,34 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         st.markdown(f"{k}: {v}%")
         st.caption(f"There are ~{total:,} {k} patients with {disease} in the United States")
 
-# COL 2 SECOND (target inputs already exists properly here)
-# COL 3 THIRD (was above col2, now moved below col2)
-# [PASTED HERE IF NECESSARY – see prior canvas state]
+# COL 2
+with col2.expander("Target Enrollment Inputs"):
+    st.markdown("Inputs coming soon...")
+
+# COL 3
+with col3.expander("Estimated Quantity Needed to Screen"):
+    st.markdown("Estimates coming soon...")
+
+# GENERAL RECRUITMENT STRATEGIES
+st.markdown("---")
+st.subheader(f"General Motivators and Barriers for {disease}")
+st.caption("These motivators and barriers can be explored through Patient dossiers.")
+cols = st.columns(2)
+with cols[0]:
+    st.markdown("### ✅ Motivators")
+    st.markdown("- Trusted Voices")
+    st.markdown("- Altruism")
+    st.markdown("- Education & Disease Awareness")
+    st.markdown("- Personal Benefit")
+with cols[1]:
+    st.markdown("### ⛔ Barriers")
+    st.markdown("- Study Partner Requirement")
+    st.markdown("- Procedure/Investigational Burden")
+    st.markdown("- Disease Stigma")
+    st.markdown("- Specific Population Injustices")
+
+# RECRUITMENT STRATEGIES FOR FOCUS POPULATIONS
+st.markdown("---")
+st.subheader(f"📣 Recruitment Strategies for Focus Populations with {disease}")
+st.caption("⬇️ List is in order from greatest % population needed to screen; thus greatest need to focus")
+st.markdown("Strategies coming soon...")

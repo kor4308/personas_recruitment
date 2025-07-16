@@ -190,6 +190,7 @@ with col3.expander("Estimated Quantity Needed to Screen"):
     total_enroll = st.session_state.get("total_enroll", 1000)
 
     st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+st.caption("➡️ List is in order from greatest % population needed to screen")
     gender_data = []
     for key in target["Gender"]:
         pct = st.session_state.get(f"gender_{key}", target["Gender"][key])
@@ -206,6 +207,7 @@ with col3.expander("Estimated Quantity Needed to Screen"):
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
     st.markdown("**Estimated Quantity Needed to Screen - Race**")
+st.caption("➡️ List is in order from greatest % population needed to screen")
     race_data = []
     for key in target["Race"]:
         pct = st.session_state.get(f"race_{key}", target["Race"][key])
@@ -226,4 +228,66 @@ with col3.expander("Estimated Quantity Needed to Screen"):
         for category, data in [("Gender", gender_data), ("Race", race_data)]:
             st.markdown(f"**{category} Calculations**")
             for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
+                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")
+
+# --- General Recruitment Strategies Section ---
+st.markdown("---")
+st.header(f"General Recruitment Strategies for {disease}")
+
+if disease == "Alzheimer's":
+    st.subheader("✅ Motivators")
+    st.markdown("- Trusted Voices")
+    st.markdown("- Altruism")
+    st.markdown("- Education & Disease Awareness")
+    st.markdown("- Personal Benefit")
+
+    st.subheader("⛔ Barriers")
+    st.markdown("- Study Partner Requirement")
+    st.markdown("- Procedure/Investigational Burden")
+    st.markdown("- Disease Stigma")
+    st.markdown("- Specific Population Injustices")
+
+# --- Recruitment Strategies for Subgroups ---
+st.subheader("📣 Recruitment Strategies for Focus Populations")
+recruitment_strategies = {
+    "Female": [
+        "Connect with women's health networks and caregiving support groups",
+        "Partner with community-based organizations that focus on elder care",
+        "Provide flexible study visit schedules or caregiver support"
+    ],
+    "Male": [
+        "Target outreach through male-dominated environments such as sporting events",
+        "Promote messaging around benefitting future generations",
+        "Address stigma around mental health and participation"
+    ],
+    "Black, NH": [
+        "Engage trusted faith-based and civic leaders",
+        "Highlight historical medical distrust and steps taken to ensure ethical practices",
+        "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
+    ],
+    "Hispanic": [
+        "Use Spanish-language materials and bilingual coordinators",
+        "Partner with local Hispanic/Latino organizations and clinics",
+        "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
+    ],
+    "White, NH": [
+        "Collaborate with primary care and memory clinics in suburban and rural areas"
+    ],
+    "AIAN, NH": [
+        "Partner with tribal health clinics and IHS facilities",
+        "Provide culturally competent staff and materials",
+        "Ensure trials accommodate rural residence or travel support"
+    ],
+    "NHPI, NH": [
+        "Engage local community leaders and churches",
+        "Incorporate family-centered decision-making",
+        "Use Pacific Islander liaisons for outreach"
+    ]
+}
+
+for group, strategies in recruitment_strategies.items():
+    st.markdown(f"**{group}**")
+    for strat in strategies:
+        st.markdown(f"- {strat}")
+    st.markdown("---")
                 st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")

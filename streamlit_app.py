@@ -186,7 +186,7 @@ with col2.expander("Target Enrollment Inputs"):
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll")
 
     st.markdown("**Gender Target % and Screen Success**")
-     st.caption(""Target % comes from disease population and screen success information, doi: 10.1001/jamanetworkopen.2021.14364, although does not include all races (such as missing NHPI and AIAN)")
+    st.caption(""Target % comes from disease population and screen success information, doi: 10.1001/jamanetworkopen.2021.14364, although does not include all races (such as missing NHPI and AIAN)")
     for key, value in ALZHEIMERS_TARGET["Gender"].items():
         cols = st.columns([2, 2])
         with cols[0]:

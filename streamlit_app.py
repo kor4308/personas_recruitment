@@ -178,7 +178,7 @@ with col3.expander("Estimated Quantity Needed to Screen"):
         target_n = total_enroll * (pct / 100)
         screen_success_rate = st.session_state.get(f"sf_gender_{key}", 100) / 100
         screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
-        eligible_pop = int((target["Race"][key] / 100) * total_disease_pop)
+        eligible_pop = int((pct / 100) * total_disease_pop)
         screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
         gender_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
 

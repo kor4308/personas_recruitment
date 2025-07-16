@@ -188,12 +188,12 @@ with col2.expander("Target Enrollment Inputs"):
 
 with col3.expander("Estimated Quantity Needed to Screen"):
     
-    st.caption("⬇️ List is in order from greatest % population needed to screen")
+        st.caption("⬇️ List is in order from greatest % population needed to screen")
     total_enroll = st.session_state.get("total_enroll", 1000)
 
-    st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+        st.markdown("**Estimated Quantity Needed to Screen - Gender**")
 st.caption("⬇️ List is in order from greatest % population needed to screen")
-    gender_data = []
+        gender_data = []
     for key in target["Gender"]:
         pct = st.session_state.get(f"gender_{key}", target["Gender"][key])
         target_n = total_enroll * (pct / 100)
@@ -208,10 +208,10 @@ st.caption("⬇️ List is in order from greatest % population needed to screen"
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
-    st.markdown("**Estimated Quantity Needed to Screen - Race**")
+        st.markdown("**Estimated Quantity Needed to Screen - Race**")
     st.caption("➡️ List is in order from greatest % population needed to screen")
 st.caption("➡️ List is in order from greatest % population needed to screen")
-    race_data = []
+        race_data = []
     for key in target["Race"]:
         pct = st.session_state.get(f"race_{key}", target["Race"][key])
         target_n = total_enroll * (pct / 100)

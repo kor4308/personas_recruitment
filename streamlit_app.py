@@ -189,18 +189,10 @@ with col2.expander("Target Enrollment Inputs"):
     for key, value in target["Gender"].items():
         cols = st.columns([2, 2])
         with cols[0]:
-            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        st.caption(f"Targeting {int(total_enroll * (value / 100)):,} {key} participants")
         with cols[1]:
             default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
-            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
-
-    st.markdown("**Race Target % and Screen Success**")
-    for key, value in target["Race"].items():
-        cols = st.columns([2, 2])
-        with cols[0]:
-            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
-        with cols[1]:
-            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
 
 with col3.expander("Estimated Quantity Needed to Screen"):

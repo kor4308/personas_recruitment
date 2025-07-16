@@ -289,11 +289,20 @@ recruitment_strategies = {
 }
 
 combined_data = gender_data + race_data
-combined_data.sort(key=lambda x: -x[2])
+seen = set()
+sorted_groups = []
+for group, _, screen_percent, *_ in sorted(combined_data, key=lambda x: -x[2]):
+    if group not in seen:
+        seen.add(group)
+        sorted_groups.append(group)
 
-for group, _, _, _, _, _ in combined_data:
+for group in sorted_groups:
     if group in recruitment_strategies:
-        st.markdown(f"**{group}**")
+        match = next((x for x in (gender_data + race_data) if x[0] == group), None)
+        if match:
+            _, _, screen_percent, *_ = match
+            st.markdown(f"**{group}**")
+            st.caption(f"Approximately {screen_percent:.3f}% of {group} {disease} population must be screened to enroll target")
         for strat in recruitment_strategies[group]:
             st.markdown(f"- {strat}")
         st.markdown("---")

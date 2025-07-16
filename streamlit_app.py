@@ -255,6 +255,8 @@ if disease == "Alzheimer's":
         st.markdown("- Specific Population Injustices")
 
 # --- Recruitment Strategies for Subgroups ---
+
+st.markdown("---")
 st.subheader(f"📣 Recruitment Strategies for Focus Populations with {disease}")
 st.caption("⬇️ List is in order from greatest % population needed to screen; thus greatest need to focus")
 recruitment_strategies = {

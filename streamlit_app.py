@@ -187,13 +187,11 @@ with col2.expander("Target Enrollment Inputs"):
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
 
 with col3.expander("Estimated Quantity Needed to Screen"):
-    
-        st.caption("⬇️ List is in order from greatest % population needed to screen")
+    st.markdown("**Estimated Quantity Needed to Screen - Gender**")
+    st.caption("⬇️ List is in order from greatest % population needed to screen")
     total_enroll = st.session_state.get("total_enroll", 1000)
 
-        st.markdown("**Estimated Quantity Needed to Screen - Gender**")
-st.caption("⬇️ List is in order from greatest % population needed to screen")
-        gender_data = []
+    gender_data = []
     for key in target["Gender"]:
         pct = st.session_state.get(f"gender_{key}", target["Gender"][key])
         target_n = total_enroll * (pct / 100)
@@ -208,32 +206,8 @@ st.caption("⬇️ List is in order from greatest % population needed to screen"
         st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
         st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
 
-        st.markdown("**Estimated Quantity Needed to Screen - Race**")
-    st.caption("➡️ List is in order from greatest % population needed to screen")
-st.caption("➡️ List is in order from greatest % population needed to screen")
-        race_data = []
-    for key in target["Race"]:
-        pct = st.session_state.get(f"race_{key}", target["Race"][key])
-        target_n = total_enroll * (pct / 100)
-        screen_success_rate = st.session_state.get(f"sf_race_{key}", 100) / 100
-        screened_needed = math.ceil(target_n / screen_success_rate) if screen_success_rate > 0 else 0
-        eligible_pop = int((target["Race"].get(key, 0) / 100) * total_disease_pop)
-        screen_percent = (screened_needed / eligible_pop) * 100 if eligible_pop > 0 else 0
-        race_data.append((key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop))
-
-    race_data.sort(key=lambda x: -x[2])
-    for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in race_data:
-        st.markdown(f"{key}: {screened_needed:,} ({screen_percent:.3f}%)")
-        st.caption(f"Approximately {screen_percent:.3f}% of {key} {disease} population must be screened to enroll target")
-
-    if st.toggle("Show Calculation Steps"):
-        st.markdown("### Calculation Breakdown")
-        for category, data in [("Gender", gender_data), ("Race", race_data)]:
-            st.markdown(f"**{category} Calculations**")
-            for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
-                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")
-
-# --- General Recruitment Strategies Section ---
+    st.markdown("**Estimated Quantity Needed to Screen - Race**")
+    st.caption("
 st.markdown("---")
 st.header(f"General Recruitment Strategies for {disease}")
 

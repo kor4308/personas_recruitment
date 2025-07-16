@@ -233,7 +233,8 @@ with col3.expander("Estimated Quantity Needed to Screen"):
 
 # --- General Recruitment Strategies Section ---
 st.markdown("---")
-st.header(f"General Recruitment Strategies for {disease}")
+st.header(f"General Motivators and Barriers for {disease}")
+st.caption("These motivators and barriers can be explored through Patient dossiers.")
 
 if disease == "Alzheimer's":
     st.subheader("✅ Motivators")
@@ -249,7 +250,8 @@ if disease == "Alzheimer's":
     st.markdown("- Specific Population Injustices")
 
 # --- Recruitment Strategies for Subgroups ---
-st.subheader("📣 Recruitment Strategies for Focus Populations")
+st.subheader(f"📣 Recruitment Strategies for Focus Populations with {disease}")
+st.caption("⬇️ List is in order from greatest % population needed to screen; thus greatest need to focus")
 recruitment_strategies = {
     "Female": [
         "Connect with women's health networks and caregiving support groups",
@@ -286,9 +288,12 @@ recruitment_strategies = {
     ]
 }
 
-for group, strategies in recruitment_strategies.items():
-    st.markdown(f"**{group}**")
-    for strat in strategies:
-        st.markdown(f"- {strat}")
-    st.markdown("---")
+combined_data = gender_data + race_data
+combined_data.sort(key=lambda x: -x[2])
 
+for group, _, _, _, _, _ in combined_data:
+    if group in recruitment_strategies:
+        st.markdown(f"**{group}**")
+        for strat in recruitment_strategies[group]:
+            st.markdown(f"- {strat}")
+        st.markdown("---")

@@ -235,6 +235,8 @@ with col3.expander("Estimated Quantity Needed to Screen"):
 st.markdown("---")
 st.header(f"General Motivators and Barriers for {disease}")
 st.caption("These motivators and barriers can be explored through Patient dossiers.")
+if disease != "Alzheimer's":
+    st.caption("Each group below includes an estimate of the % of the {disease} population that must be screened to meet enrollment targets.")
 
 if disease == "Alzheimer's":
     st.subheader("✅ Motivators")

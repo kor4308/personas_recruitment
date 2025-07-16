@@ -228,7 +228,8 @@ with col3.expander("Estimated Quantity Needed to Screen"):
         for category, data in [("Gender", gender_data), ("Race", race_data)]:
             st.markdown(f"**{category} Calculations**")
             for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
-                
+                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")
+
 
 # --- General Recruitment Strategies Section ---
 st.markdown("---")
@@ -290,4 +291,4 @@ for group, strategies in recruitment_strategies.items():
     for strat in strategies:
         st.markdown(f"- {strat}")
     st.markdown("---")
-                st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")
+

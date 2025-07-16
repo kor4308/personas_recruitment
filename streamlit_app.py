@@ -98,9 +98,6 @@ DISEASE_PREVALENCE = {
     "Bipolar Disorder": {
         "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     }
-}},
-    "Bipolar Disorder": {"screen_fail": {}},
-    "Schizophrenia": {"screen_fail": {}}
 }
 
 st.title("US vs Target Demographic Comparator")
@@ -194,7 +191,7 @@ with col2.expander("Target Enrollment Inputs"):
         with cols[0]:
             st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
         with cols[1]:
-            default_success = 100 - DISEASE_PREVALENCE[disease]["screen_fail"].get(key, 0.5) * 100
+            default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
 
     st.markdown("**Race Target % and Screen Success**")

@@ -10,7 +10,7 @@ SCHIZOPHRENIA_TARGET = {
     "Race": {
         "Hispanic": 15.0,
         "White, NH": 30.0,
-        "Black, NH": 25.0,
+        "African American": 25.0,
         "Asian, NH": 10.0,
         "AIAN, NH": 10.0,
         "NHPI, NH": 5.0,
@@ -23,7 +23,7 @@ US_CENSUS = {
     "Race": {
         "Hispanic": 17.6,
         "White, NH": 61.1,
-        "Black, NH": 12.3,
+        "African American": 12.3,
         "Asian, NH": 6.3,
         "AIAN, NH": 0.7,
         "NHPI, NH": 0.2,
@@ -36,7 +36,7 @@ US_65PLUS = {
     "Race": {
         "Hispanic": 8.8,
         "White, NH": 76.6,
-        "Black, NH": 9.2,
+        "African American": 9.2,
         "Asian, NH": 4.5,
         "AIAN, NH": 0.7,
         "NHPI, NH": 0.1,
@@ -49,7 +49,7 @@ ALZHEIMERS_TARGET = {
     "Race": {
         "Hispanic": 21.2,
         "White, NH": 51.7,
-        "Black, NH": 19.2,
+        "African American": 19.2,
         "Asian, NH": 5.9,
         "AIAN, NH": 0.8,
         "NHPI, NH": 0.3,
@@ -62,7 +62,7 @@ BIPOLAR_TARGET = {
     "Race": {
         "Hispanic": 18.5,
         "White, NH": 53.0,
-        "Black, NH": 16.0,
+        "African American": 16.0,
         "Asian, NH": 7.0,
         "AIAN, NH": 1.0,
         "NHPI, NH": 0.5,
@@ -83,7 +83,7 @@ DISEASE_PREVALENCE = {
             "Female": 0.3,
             "Male": 0.7,
             "White, NH": 0.75,
-            "Black, NH": 0.35,
+            "African American": 0.35,
             "Hispanic": 0.28,
             "Asian, NH": 0.50,
             "AIAN, NH": 0.50,
@@ -93,10 +93,10 @@ DISEASE_PREVALENCE = {
         "screen_fail": {}
     },
     "Schizophrenia": {
-        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "African American", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     },
     "Bipolar Disorder": {
-        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "African American", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
     }
 }
 
@@ -190,6 +190,7 @@ with col2.expander("Target Enrollment Inputs"):
         cols = st.columns([2, 2])
         with cols[0]:
             st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+        st.caption(f"Targeting {int(total_enroll * (st.session_state.get(f'race_{key}', value) / 100)):,} {key} participants")
         st.caption(f"Targeting {int(total_enroll * (value / 100)):,} {key} participants")
         with cols[1]:
             default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
@@ -279,7 +280,7 @@ recruitment_strategies = {
         "Promote messaging around benefitting future generations",
         "Address stigma around mental health and participation"
     ],
-    "Black, NH": [
+    "African American": [
         "Engage trusted faith-based and civic leaders",
         "Highlight historical medical distrust and steps taken to ensure ethical practices",
         "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."

@@ -123,6 +123,8 @@ else:
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
 
 with col1.expander("US Demographics and Disease Epidemiology"):
+    st.subheader("2023 US Census")
+    st.caption("Information in this section is from the 2023 US Census.")
     st.markdown(f"**Total U.S. Population:** {US_TOTAL_POP:,}")
     g_col, r_col = st.columns(2)
     with g_col:
@@ -141,15 +143,26 @@ with col1.expander("US Demographics and Disease Epidemiology"):
     if disease in ["Alzheimer's", "Bipolar Disorder", "Schizophrenia"]:
         st.markdown("---")
         st.subheader(f"Disease Epidemiology in {disease} (Estimated)")
+        if disease == "Alzheimer's":
+            st.caption("Information provided is from the 2023 Alzheimer's Report (Alzheimer's Association Journal). AIAN and NHPI races were not accounted for in this report, thus they are from the internet.")
+        else:
+            st.caption("These numbers are from the internet."). AIAN and NHPI races were not accounted for in this report, thus they are from the internet.")
         disease_total = DISEASE_TOTALS.get(pop_key)
         if disease_total:
             st.markdown(f"**Total population with {disease}: {disease_total:,}**")
-        st.markdown("**Gender:**")
-        for k, v in target["Gender"].items():
-            count = int((v / 100) * disease_total)
-            st.markdown(f"{k}: {v}%")
-            st.caption(f"There are ~{count:,} {k} patients with {disease} in the United States")
-        st.markdown("**Race:**")
+        g_col2, r_col2 = st.columns(2)
+        with g_col2:
+            st.subheader("Gender")
+            for k, v in target["Gender"].items():
+                count = int((v / 100) * disease_total)
+                st.markdown(f"{k}: {v}%")
+                st.caption(f"There are ~{count:,} {k} patients with {disease} in the United States")
+        with r_col2:
+            st.subheader("Race")
+            for k, v in target["Race"].items():
+                count = int((v / 100) * disease_total)
+                st.markdown(f"{k}: {v}%")
+                st.caption(f"There are ~{count:,} {k} patients with {disease} in the United States")
         for k, v in target["Race"].items():
             count = int((v / 100) * disease_total)
             st.markdown(f"{k}: {v}%")

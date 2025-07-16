@@ -150,8 +150,6 @@ with col2.expander("Target Enrollment Inputs"):
             updated_pct = st.session_state.get(f"gender_{key}", value)
             target_n = int(total_enroll * (updated_pct / 100))
             st.caption(f"Targeting {target_n:,} {key} participants")
-            target_n = int(total_enroll * (pct / 100))
-            st.caption(f"Targeting {target_n:,} {key} participants")
         with cols[1]:
             default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")

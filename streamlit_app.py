@@ -242,18 +242,16 @@ if disease == "Alzheimer's":
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("✅ Motivators")
-    st.markdown("- Trusted Voices")
-    st.markdown("- Altruism")
-    st.markdown("- Education & Disease Awareness")
-    st.markdown("- Personal Benefit")
+        st.markdown("- Trusted Voices")
+        st.markdown("- Altruism")
+        st.markdown("- Education & Disease Awareness")
+        st.markdown("- Personal Benefit")
 
-    
     with col2:
         st.subheader("⛔ Barriers")
-    st.markdown("- Study Partner Requirement")
-    st.markdown("- Procedure/Investigational Burden")
-    st.markdown("- Disease Stigma")
-    
+        st.markdown("- Study Partner Requirement")
+        st.markdown("- Procedure/Investigational Burden")
+        st.markdown("- Disease Stigma")
         st.markdown("- Specific Population Injustices")
 
 # --- Recruitment Strategies for Subgroups ---

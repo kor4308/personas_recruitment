@@ -100,23 +100,24 @@ DISEASE_PREVALENCE = {
     }
 }
 
-# Reinsert race target inputs and screen success
+col1, col2, col3 = st.columns([1, 1, 1])
+
 with col2.expander("Target Enrollment Inputs"):
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll")
 
     st.markdown("**Gender Target % and Screen Success**")
-    for key, value in target["Gender"].items():
+    for key, value in ALZHEIMERS_TARGET["Gender"].items():
         cols = st.columns([2, 2])
         with cols[0]:
             st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
             updated_val = st.session_state.get(f"gender_{key}", value)
             st.caption(f"Targeting {int(total_enroll * (updated_val / 100)):,} {key} participants")
         with cols[1]:
-            default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
+            default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
 
     st.markdown("**Race Target % and Screen Success**")
-    for key, value in target["Race"].items():
+    for key, value in ALZHEIMERS_TARGET["Race"].items():
         cols = st.columns([2, 2])
         with cols[0]:
             st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
@@ -126,5 +127,5 @@ with col2.expander("Target Enrollment Inputs"):
             else:
                 st.caption(f"Targeting {int(total_enroll * (updated_val / 100)):,} {key} participants")
         with cols[1]:
-            default_success = DISEASE_PREVALENCE[disease].get("screen_success", {}).get(key, 0.5) * 100
+            default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
             st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")

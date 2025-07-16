@@ -239,17 +239,22 @@ if disease != "Alzheimer's":
     st.caption("Each group below includes an estimate of the % of the {disease} population that must be screened to meet enrollment targets.")
 
 if disease == "Alzheimer's":
-    st.subheader("✅ Motivators")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("✅ Motivators")
     st.markdown("- Trusted Voices")
     st.markdown("- Altruism")
     st.markdown("- Education & Disease Awareness")
     st.markdown("- Personal Benefit")
 
-    st.subheader("⛔ Barriers")
+    
+    with col2:
+        st.subheader("⛔ Barriers")
     st.markdown("- Study Partner Requirement")
     st.markdown("- Procedure/Investigational Burden")
     st.markdown("- Disease Stigma")
-    st.markdown("- Specific Population Injustices")
+    
+        st.markdown("- Specific Population Injustices")
 
 # --- Recruitment Strategies for Subgroups ---
 st.subheader(f"📣 Recruitment Strategies for Focus Populations with {disease}")
@@ -257,7 +262,7 @@ st.caption("⬇️ List is in order from greatest % population needed to screen;
 recruitment_strategies = {
     "Female": [
         "Connect with women's health networks and caregiving support groups",
-        "Partner with community-based organizations that focus on elder care",
+        "Partner with research registries",
         "Provide flexible study visit schedules or caregiver support"
     ],
     "Male": [
@@ -287,6 +292,10 @@ recruitment_strategies = {
         "Engage local community leaders and churches",
         "Incorporate family-centered decision-making",
         "Use Pacific Islander liaisons for outreach"
+    ],
+    "Asian, NH": [
+        "Partner with Asian community health coalitions or clinics",
+        "Promote awareness that dementia is not a normal part of aging"
     ]
 }
 

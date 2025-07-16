@@ -146,7 +146,10 @@ with col2.expander("Target Enrollment Inputs"):
     for key, value in target["Gender"].items():
         cols = st.columns([2, 2])
         with cols[0]:
-            pct = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+            updated_pct = st.session_state.get(f"gender_{key}", value)
+            target_n = int(total_enroll * (updated_pct / 100))
+            st.caption(f"Targeting {target_n:,} {key} participants")
             target_n = int(total_enroll * (pct / 100))
             st.caption(f"Targeting {target_n:,} {key} participants")
         with cols[1]:

@@ -128,11 +128,15 @@ with col1.expander("US Demographics and Disease Epidemiology"):
     with g_col:
         st.subheader("Gender")
         for k, v in current_us["Gender"].items():
+            count = int((v / 100) * US_TOTAL_POP)
             st.markdown(f"{k}: {v}%")
+            st.caption(f"There are ~{count:,} {k} individuals in the United States")
     with r_col:
         st.subheader("Race")
         for k, v in current_us["Race"].items():
+            count = int((v / 100) * US_TOTAL_POP)
             st.markdown(f"{k}: {v}%")
+            st.caption(f"There are ~{count:,} {k} individuals in the United States")
 
     if disease in ["Alzheimer's", "Bipolar Disorder", "Schizophrenia"]:
         st.markdown("---")
@@ -142,10 +146,14 @@ with col1.expander("US Demographics and Disease Epidemiology"):
             st.markdown(f"**Total population with {disease}: {disease_total:,}**")
         st.markdown("**Gender:**")
         for k, v in target["Gender"].items():
+            count = int((v / 100) * disease_total)
             st.markdown(f"{k}: {v}%")
+            st.caption(f"There are ~{count:,} {k} patients with {disease} in the United States")
         st.markdown("**Race:**")
         for k, v in target["Race"].items():
+            count = int((v / 100) * disease_total)
             st.markdown(f"{k}: {v}%")
+            st.caption(f"There are ~{count:,} {k} patients with {disease} in the United States")
 
 with col2.expander("Target Enrollment Inputs"):
     total_enroll = st.number_input("Total Enrollment Target", min_value=100, max_value=1000000, value=1000, step=100, key="total_enroll")

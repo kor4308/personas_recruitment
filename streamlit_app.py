@@ -78,7 +78,27 @@ DISEASE_TOTALS = {
 }
 
 DISEASE_PREVALENCE = {
-    "Alzheimer's": {"screen_fail": {}},
+    "Alzheimer's": {
+        "screen_success": {
+            "Female": 0.3,
+            "Male": 0.7,
+            "White, NH": 0.75,
+            "Black, NH": 0.35,
+            "Hispanic": 0.28,
+            "Asian, NH": 0.50,
+            "AIAN, NH": 0.50,
+            "NHPI, NH": 0.50,
+            "Other": 0.50
+        },
+        "screen_fail": {}
+    },
+    "Schizophrenia": {
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+    },
+    "Bipolar Disorder": {
+        "screen_fail": {k: 0.5 for k in ["Female", "Male", "White, NH", "Black, NH", "Hispanic", "Asian, NH", "AIAN, NH", "NHPI, NH", "Other"]}
+    }
+}},
     "Bipolar Disorder": {"screen_fail": {}},
     "Schizophrenia": {"screen_fail": {}}
 }

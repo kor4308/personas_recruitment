@@ -146,7 +146,7 @@ with col1.expander("US Demographics and Disease Epidemiology"):
         if disease == "Alzheimer's":
             st.caption("Information provided is from the 2023 Alzheimer's Report (Alzheimer's Association Journal). AIAN and NHPI races were not accounted for in this report, thus they are from the internet.")
         else:
-            st.caption("These numbers are from the internet."). AIAN and NHPI races were not accounted for in this report, thus they are from the internet.")
+            st.caption("These numbers are from the internet.")
         disease_total = DISEASE_TOTALS.get(pop_key)
         if disease_total:
             st.markdown(f"**Total population with {disease}: {disease_total:,}**")

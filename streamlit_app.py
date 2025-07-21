@@ -282,64 +282,71 @@ if disease == "Alzheimer's":
 
 # --- Recruitment Strategies for Subgroups ---
 
+# --- Recruitment Strategies for Subgroups ---
 st.markdown("---")
 st.subheader(f"📣 Recruitment Strategies for Focus Populations with {disease}")
-st.caption("⬇️ List is in order from greatest % population needed to screen; thus greatest need to focus")
-recruitment_strategies = {
-    "Female": [
-        "Connect with women's health networks and caregiving support groups",
-        "Partner with research registries",
-        "Provide flexible study visit schedules or caregiver support"
-    ],
-    "Male": [
-        "Target outreach through male-dominated environments such as sporting events",
-        "Promote messaging around benefitting future generations",
-        "Address stigma around mental health and participation"
-    ],
-    "African American": [
-        "Engage trusted faith-based and civic leaders",
-        "Highlight historical medical distrust and steps taken to ensure ethical practices",
-        "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
-    ],
-    "Hispanic": [
-        "Use Spanish-language materials and bilingual coordinators",
-        "Partner with local Hispanic/Latino organizations and clinics",
-        "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
-    ],
-    "White, NH": [
-        "Collaborate with primary care and memory clinics in suburban and rural areas"
-    ],
-    "AIAN, NH": [
-        "Partner with tribal health clinics and IHS facilities",
-        "Provide culturally competent staff and materials",
-        "Ensure trials accommodate rural residence or travel support"
-    ],
-    "NHPI, NH": [
-        "Engage local community leaders and churches",
-        "Incorporate family-centered decision-making",
-        "Use Pacific Islander liaisons for outreach"
-    ],
-    "Asian, NH": [
-        "Partner with Asian community health coalitions or clinics",
-        "Promote awareness that dementia is not a normal part of aging"
-    ]
-}
 
-combined_data = gender_data + race_data
-seen = set()
-sorted_groups = []
-for group, _, screen_percent, *_ in sorted(combined_data, key=lambda x: -x[2]):
-    if group not in seen:
-        seen.add(group)
-        sorted_groups.append(group)
+if disease == "Alzheimer's":
+    st.caption("⬇️ List is in order from greatest % population needed to screen; thus greatest need to focus")
 
-for group in sorted_groups:
-    if group in recruitment_strategies:
-        match = next((x for x in (gender_data + race_data) if x[0] == group), None)
-        if match:
-            _, _, screen_percent, *_ = match
-            st.markdown(f"**{group}**")
-            st.caption(f"Approximately {screen_percent:.3f}% of {group} {disease} population must be screened to enroll target")
-        for strat in recruitment_strategies[group]:
-            st.markdown(f"- {strat}")
-        st.markdown("---")
+    recruitment_strategies = {
+        "Female": [
+            "Connect with women's health networks and caregiving support groups",
+            "Partner with research registries",
+            "Provide flexible study visit schedules or caregiver support"
+        ],
+        "Male": [
+            "Target outreach through male-dominated environments such as sporting events",
+            "Promote messaging around benefitting future generations",
+            "Address stigma around mental health and participation"
+        ],
+        "African American": [
+            "Engage trusted faith-based and civic leaders",
+            "Highlight historical medical distrust and steps taken to ensure ethical practices",
+            "Avoid or reassess the need for MMSE and logical memory scoring inclusion criteria as these can be inequitable barriers."
+        ],
+        "Hispanic": [
+            "Use Spanish-language materials and bilingual coordinators",
+            "Partner with local Hispanic/Latino organizations and clinics",
+            "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
+        ],
+        "White, NH": [
+            "Collaborate with primary care and memory clinics in suburban and rural areas"
+        ],
+        "AIAN, NH": [
+            "Partner with tribal health clinics and IHS facilities",
+            "Provide culturally competent staff and materials",
+            "Ensure trials accommodate rural residence or travel support"
+        ],
+        "NHPI, NH": [
+            "Engage local community leaders and churches",
+            "Incorporate family-centered decision-making",
+            "Use Pacific Islander liaisons for outreach"
+        ],
+        "Asian, NH": [
+            "Partner with Asian community health coalitions or clinics",
+            "Promote awareness that dementia is not a normal part of aging"
+        ]
+    }
+
+    combined_data = gender_data + race_data
+    seen = set()
+    sorted_groups = []
+    for group, _, screen_percent, *_ in sorted(combined_data, key=lambda x: -x[2]):
+        if group not in seen:
+            seen.add(group)
+            sorted_groups.append(group)
+
+    for group in sorted_groups:
+        if group in recruitment_strategies:
+            match = next((x for x in (gender_data + race_data) if x[0] == group), None)
+            if match:
+                _, _, screen_percent, *_ = match
+                st.markdown(f"**{group}**")
+                st.caption(f"Approximately {screen_percent:.3f}% of {group} {disease} population must be screened to enroll target")
+            for strat in recruitment_strategies[group]:
+                st.markdown(f"- {strat}")
+            st.markdown("---")
+else:
+    st.caption(f"Recruitment strategies for {disease} are currently being further explored.")
+

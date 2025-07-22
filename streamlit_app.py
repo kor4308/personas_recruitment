@@ -187,44 +187,29 @@ with col2.expander("Target Enrollment Inputs"):
 
     st.markdown("**Gender Target % and Screen Success**")
     st.caption("Target % comes from disease population and screen success information, doi: 10.1001/jamanetworkopen.2021.14364, although does not include all races (such as missing NHPI and AIAN)")
-
-    gender_inputs = {}
     for key, value in ALZHEIMERS_TARGET["Gender"].items():
-        gender_inputs[key] = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"gender_{key}")
+            updated_val = st.session_state.get(f"gender_{key}", value)
+            st.caption(f"Targeting {int(total_enroll * (updated_val / 100)):,} {key} participants")
+        with cols[1]:
+            default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
 
-    gender_total = sum(gender_inputs.values())
-    if gender_total == 0:
-        st.warning("Gender percentages sum to 0. Please adjust.")
-        gender_total = 1  # prevent divide-by-zero
-
-    st.markdown("**Adjusted Gender Targets:**")
-    for key in gender_inputs:
-        normalized_val = (gender_inputs[key] / gender_total) * 100
-        st.caption(f"{key}: {normalized_val:.1f}% → Targeting {int(total_enroll * normalized_val / 100):,} participants")
-        default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
-        st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_gender_{key}")
-
-    st.markdown("---")
     st.markdown("**Race Target % and Screen Success**")
-
-    race_inputs = {}
     for key, value in ALZHEIMERS_TARGET["Race"].items():
-        race_inputs[key] = st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
-
-    race_total = sum(race_inputs.values())
-    if race_total == 0:
-        st.warning("Race percentages sum to 0. Please adjust.")
-        race_total = 1  # prevent divide-by-zero
-
-    st.markdown("**Adjusted Race Targets:**")
-    for key in race_inputs:
-        normalized_val = (race_inputs[key] / race_total) * 100
-        if key == "Other":
-            st.caption(f"{key}: {normalized_val:.1f}% → Targeting {int(total_enroll * normalized_val / 100):,} participants from other or multiple races")
-        else:
-            st.caption(f"{key}: {normalized_val:.1f}% → Targeting {int(total_enroll * normalized_val / 100):,} {key} participants")
-        default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
-        st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
+        cols = st.columns([2, 2])
+        with cols[0]:
+            st.number_input(f"{key} (%)", min_value=0.0, max_value=100.0, value=value, step=0.1, key=f"race_{key}")
+            updated_val = st.session_state.get(f"race_{key}", value)
+            if key == "Other":
+                st.caption(f"Targeting {int(total_enroll * (updated_val / 100)):,} participants from other or multiple races")
+            else:
+                st.caption(f"Targeting {int(total_enroll * (updated_val / 100)):,} {key} participants")
+        with cols[1]:
+            default_success = DISEASE_PREVALENCE["Alzheimer's"].get("screen_success", {}).get(key, 0.5) * 100
+            st.number_input("Screen Success %", min_value=0.0, max_value=100.0, value=default_success, step=1.0, key=f"sf_race_{key}")
 
 
 

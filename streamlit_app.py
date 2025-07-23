@@ -111,6 +111,18 @@ trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"],
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
+# Trial selection dropdown
+trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0)
+
+# Set age group and population key
+if disease == "Alzheimer's":
+    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
+    st.caption("Population estimates reflect U.S. population in selected age group.")
+    pop_key = f"Alzheimer's_{age_group}"
+else:
+    age_group = None
+    pop_key = disease
+
 # Base disease-specific targets
 if disease == "Alzheimer's":
     base_target = ALZHEIMERS_TARGET
@@ -151,13 +163,20 @@ elif trial == "Custom":
         }
     }
 
-
-if disease == "Alzheimer's":
-    pop_key = f"Alzheimer's_{age_group}"
+# Determine U.S. total population and disease population
+if disease == "Alzheimer's" and age_group:
+    if age_group == "65+":
+        US_TOTAL_POP = 55792501
+        current_us = US_65PLUS
+    else:
+        US_TOTAL_POP = 342_000_000
+        current_us = US_CENSUS
 else:
-    pop_key = disease
+    US_TOTAL_POP = 342_000_000
+    current_us = US_CENSUS
 
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
+
 
 with col1.expander("US Demographics and Disease Epidemiology"):
     st.subheader("2023 US Census")

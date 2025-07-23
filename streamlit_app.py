@@ -118,8 +118,7 @@ else:
     pop_key = disease
 
 # Base disease-specific targets
-trial = "(Select)"  # Default value in case trial is undefined due to disease
-if disease == "Alzheimer's":
+if disease in ["Alzheimer's", "Alzheimer's disease"]:
     base_target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
     base_target = BIPOLAR_TARGET
@@ -127,15 +126,6 @@ elif disease == "Schizophrenia":
     base_target = SCHIZOPHRENIA_TARGET
 else:
     base_target = US_CENSUS
-
-
-
-
-
-
-
-# Base disease-specific targets
-trial = "(Select)"  # Default value in case trial is undefined due to disease
 if disease in ["Alzheimer's", "Alzheimer's disease"]:
     base_target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -179,11 +169,8 @@ elif trial == "Custom":
 
 # Determine U.S. total population and disease population
 if disease in ["Alzheimer's", "Alzheimer's disease"]:
-        US_TOTAL_POP = 55792501
-        current_us = US_65PLUS
-    else:
-        US_TOTAL_POP = 342_000_000
-        current_us = US_CENSUS
+    US_TOTAL_POP = 55792501
+    current_us = US_65PLUS
 else:
     US_TOTAL_POP = 342_000_000
     current_us = US_CENSUS

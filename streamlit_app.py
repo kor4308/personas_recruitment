@@ -111,14 +111,13 @@ col1, col2, col3 = st.columns([1, 1, 1])
 
 
 
-# Set age group and population key
-if disease == "Alzheimer's":
-    
-
-    pop_key = f"Alzheimer's_{age_group}"
+# Set population key
+if disease in ["Alzheimer's", "Alzheimer's disease"]:
+    pop_key = "Alzheimer's_65+"  # Default age group used implicitly
 else:
-    age_group = None
     pop_key = disease
+else:
+        pop_key = disease
 
 # Base disease-specific targets
 trial = "(Select)"  # Default value in case trial is undefined due to disease
@@ -141,8 +140,7 @@ if disease in ["Alzheimer's", "Alzheimer's disease"]:
 
     pop_key = f"Alzheimer's_{age_group}"
 else:
-    age_group = None
-    pop_key = disease
+        pop_key = disease
 
 # Base disease-specific targets
 trial = "(Select)"  # Default value in case trial is undefined due to disease
@@ -188,7 +186,7 @@ elif trial == "Custom":
     }
 
 # Determine U.S. total population and disease population
-if disease in ["Alzheimer's", "Alzheimer's disease"] and age_group:
+if disease in ["Alzheimer's", "Alzheimer's disease"]:
     if age_group == "65+":
         US_TOTAL_POP = 55792501
         current_us = US_65PLUS

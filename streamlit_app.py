@@ -107,6 +107,8 @@ disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Sc
 
 
 
+
+
 # Set age group and population key
 if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector")

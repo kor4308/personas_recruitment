@@ -105,32 +105,52 @@ st.title("US vs Target Demographic Comparator")
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
 
-age_group = None
-if disease == "Alzheimer's":
-    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
-    st.caption("Population estimates reflect U.S. population in selected age group.")
+# Trial selection dropdown
+trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0)
+
 
 col1, col2, col3 = st.columns([1, 1, 1])
 
+# Base disease-specific targets
 if disease == "Alzheimer's":
-    target = ALZHEIMERS_TARGET
+    base_target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
-    target = BIPOLAR_TARGET
+    base_target = BIPOLAR_TARGET
 elif disease == "Schizophrenia":
-    target = SCHIZOPHRENIA_TARGET
+    base_target = SCHIZOPHRENIA_TARGET
 else:
-    target = US_CENSUS
+    base_target = US_CENSUS
 
-if disease == "Alzheimer's" and age_group:
-    if age_group == "65+":
-        US_TOTAL_POP = 55792501
-        current_us = US_65PLUS
-    else:
-        US_TOTAL_POP = 342_000_000
-        current_us = US_CENSUS
-else:
-    US_TOTAL_POP = 342_000_000
-    current_us = US_CENSUS
+# Apply trial-based overrides
+if trial == "Brunch":
+    target = {
+        "Gender": {"Female": 50.0, "Male": 50.0},
+        "Race": {
+            "Hispanic": 18.0,
+            "White, NH": 48.0,
+            "African American": 28.0,
+            "Asian, NH": 5.5,
+            "AIAN, NH": 0.8,
+            "NHPI, NH": 0.3,
+            "Other": 0.9
+        }
+    }
+elif trial == "Reveli" or trial == "(Select)":
+    target = base_target
+elif trial == "Custom":
+    target = {
+        "Gender": {"Female": 50.0, "Male": 50.0},
+        "Race": {
+            "Hispanic": 0.0,
+            "White, NH": 0.0,
+            "African American": 0.0,
+            "Asian, NH": 0.0,
+            "AIAN, NH": 0.0,
+            "NHPI, NH": 0.0,
+            "Other": 0.0
+        }
+    }
+
 
 if disease == "Alzheimer's":
     pop_key = f"Alzheimer's_{age_group}"

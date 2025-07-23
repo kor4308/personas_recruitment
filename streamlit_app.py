@@ -135,13 +135,15 @@ else:
 
 
 
+
+
 # Set age group and population key
 if disease in ["Alzheimer's", "Alzheimer's disease"]:
-    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector")
+    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector_alz")
     st.caption("Population estimates reflect U.S. population in selected age group.")
 
     # Trial selection dropdown (only for Alzheimer's)
-    trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0, key="trial_selection")
+    trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0, key="trial_selection_alz")
 
     pop_key = f"Alzheimer's_{age_group}"
 else:
@@ -204,6 +206,7 @@ else:
     current_us = US_CENSUS
 
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
+
 
 
 

@@ -105,6 +105,8 @@ st.title("US vs Target Demographic Comparator")
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
 
+
+
 # Set age group and population key
 if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector")
@@ -119,6 +121,7 @@ else:
     pop_key = disease
 
 # Base disease-specific targets
+trial = "(Select)"  # Default value in case trial is undefined due to disease
 if disease == "Alzheimer's":
     base_target = ALZHEIMERS_TARGET
 elif disease == "Bipolar Disorder":
@@ -129,6 +132,8 @@ else:
     base_target = US_CENSUS
 
 # Apply trial-based overrides
+trial = trial if disease == "Alzheimer's" else "(Select)"
+
 if trial == "Brunch":
     target = {
         "Gender": {"Female": 50.0, "Male": 50.0},

@@ -112,11 +112,11 @@ trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"],
 col1, col2, col3 = st.columns([1, 1, 1])
 
 # Trial selection dropdown
-trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0)
+trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0, key="trial_selection")
 
 # Set age group and population key
 if disease == "Alzheimer's":
-    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"])
+    age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector")
     st.caption("Population estimates reflect U.S. population in selected age group.")
     pop_key = f"Alzheimer's_{age_group}"
 else:
@@ -176,6 +176,7 @@ else:
     current_us = US_CENSUS
 
 total_disease_pop = DISEASE_TOTALS.get(pop_key, US_TOTAL_POP)
+
 
 
 with col1.expander("US Demographics and Disease Epidemiology"):

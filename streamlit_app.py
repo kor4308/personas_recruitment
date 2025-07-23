@@ -104,6 +104,7 @@ st.title("US vs Target Demographic Comparator")
 
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
+col1, col2, col3 = st.columns([1, 1, 1])
 
 
 

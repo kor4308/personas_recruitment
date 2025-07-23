@@ -132,7 +132,8 @@ else:
     base_target = US_CENSUS
 
 # Apply trial-based overrides
-trial = trial if disease == "Alzheimer's" else "(Select)"
+trial = trial if disease in ["Alzheimer's", "Alzheimer's disease"] else "(Select)"
+
 
 if trial == "Brunch":
     target = {

@@ -105,19 +105,14 @@ st.title("US vs Target Demographic Comparator")
 therapeutic_area = st.selectbox("Select Therapeutic Area", ["Neuro", "Other"])
 disease = st.selectbox("Select Disease", ["Alzheimer's", "Bipolar Disorder", "Schizophrenia", "Other"])
 
-# Trial selection dropdown
-trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0)
-
-
-col1, col2, col3 = st.columns([1, 1, 1])
-
-# Trial selection dropdown
-trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0, key="trial_selection")
-
 # Set age group and population key
 if disease == "Alzheimer's":
     age_group = st.selectbox("Select Age Inclusion Criteria", ["18+", "65+"], key="age_group_selector")
     st.caption("Population estimates reflect U.S. population in selected age group.")
+
+    # Trial selection dropdown (only for Alzheimer's)
+    trial = st.selectbox("Select Trial", ["(Select)", "Reveli", "Brunch", "Custom"], index=0, key="trial_selection")
+
     pop_key = f"Alzheimer's_{age_group}"
 else:
     age_group = None

@@ -137,7 +137,7 @@ else:
 # Apply trial-based overrides
 trial = trial if disease in ["Alzheimer's", "Alzheimer's disease"] else "(Select)"
 
-if trial == "Brunch":
+if trial == "South Commons":
     target = {
         "Gender": {"Female": 50.0, "Male": 50.0},
         "Race": {

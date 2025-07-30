@@ -298,7 +298,6 @@ with col3.expander("Estimated Quantity Needed to Screen"):
             for key, screened_needed, screen_percent, target_n, screen_success_rate, eligible_pop in data:
                 st.text(f"{key}: Target = {target_n:.1f}, Screen Success Rate = {screen_success_rate:.2f}, Eligible Pop = {eligible_pop}, Screened Needed = {screened_needed}, Percent = {screen_percent:.3f}%")
 
-
 # --- General Recruitment Strategies Section ---
 st.markdown("---")
 st.header(f"General Motivators and Barriers for {disease}")
@@ -321,8 +320,6 @@ if disease == "Alzheimer's":
         st.markdown("- Procedure/Investigational Burden")
         st.markdown("- Disease Stigma")
         st.markdown("- Specific Population Injustices")
-
-# --- Recruitment Strategies for Subgroups ---
 
 # --- Recruitment Strategies for Subgroups ---
 st.markdown("---")
@@ -353,38 +350,11 @@ if disease == "Alzheimer's":
             "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
         ]
     }
-    
-    # Keywords to identify MMSE-related entries
+
     mmse_keywords = [
         "MMSE and logical memory scoring inclusion criteria",
         "MMSE and logical memory scoring"
     ]
-    
-    # Loop through and display each group's strategies
-    for population, strategies in recruitment_strategies.items():
-        st.markdown(f"### {population}")
-        for strategy in strategies:
-            st.markdown(f"- {strategy}", unsafe_allow_html=True)
-    
-            # Insert collapsible sources/solutions if MMSE mentioned
-            if any(keyword in strategy for keyword in mmse_keywords):
-                st.markdown("""
-    <details>
-    <summary><strong>Sources</strong></summary>
-    <ul>
-    <li><a href='https://pubmed.ncbi.nlm.nih.gov/34228129/' target='_blank'>PubMed Article</a></li>
-    <li><a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC10171211/' target='_blank'>PMC Article</a></li>
-    </ul>
-    </details>
-    
-    <details>
-    <summary><strong>Solutions</strong></summary>
-    Consider a switch of inclusion/exclusion to Montreal Cognitive Assessment (MoCA).<br>
-    <strong>Sources:</strong> <a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC4562190/' target='_blank'>PMC Article</a>
-    </details>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
 
     combined_data = gender_data + race_data
     seen = set()
@@ -399,10 +369,26 @@ if disease == "Alzheimer's":
             match = next((x for x in (gender_data + race_data) if x[0] == group), None)
             if match:
                 _, _, screen_percent, *_ = match
-                st.markdown(f"**{group}**")
+                st.markdown(f"### {group}")
                 st.caption(f"Approximately {screen_percent:.3f}% of {group} {disease} population must be screened to enroll target")
-            for strat in recruitment_strategies[group]:
-                st.markdown(f"- {strat}")
+                for strategy in recruitment_strategies[group]:
+                    st.markdown(f"- {strategy}", unsafe_allow_html=True)
+                    if any(keyword in strategy for keyword in mmse_keywords):
+                        st.markdown("""
+<details>
+<summary><strong>Sources</strong></summary>
+<ul>
+<li><a href='https://pubmed.ncbi.nlm.nih.gov/34228129/' target='_blank'>PubMed Article</a></li>
+<li><a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC10171211/' target='_blank'>PMC Article</a></li>
+</ul>
+</details>
+
+<details>
+<summary><strong>Solutions</strong></summary>
+Consider a switch of inclusion/exclusion to Montreal Cognitive Assessment (MoCA).<br>
+<strong>Sources:</strong> <a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC4562190/' target='_blank'>PMC Article</a>
+</details>
+""", unsafe_allow_html=True)
             st.markdown("---")
 else:
     st.caption(f"Recruitment strategies for {disease} are currently being further explored.")

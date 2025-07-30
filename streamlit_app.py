@@ -351,25 +351,40 @@ if disease == "Alzheimer's":
             "Use Spanish-language materials and bilingual coordinators",
             "Partner with local Hispanic/Latino organizations and clinics",
             "Avoid or reassess the need for MMSE and logical memory scoring as these can be barriers."
-        ],
-        "White, NH": [
-            "Collaborate with primary care and memory clinics in suburban and rural areas"
-        ],
-        "AIAN, NH": [
-            "Partner with tribal health clinics and IHS facilities",
-            "Provide culturally competent staff and materials",
-            "Ensure trials accommodate rural residence or travel support"
-        ],
-        "NHPI, NH": [
-            "Engage local community leaders and churches",
-            "Incorporate family-centered decision-making",
-            "Use Pacific Islander liaisons for outreach"
-        ],
-        "Asian, NH": [
-            "Partner with Asian community health coalitions or clinics",
-            "Promote awareness that dementia is not a normal part of aging"
         ]
     }
+    
+    # Keywords to identify MMSE-related entries
+    mmse_keywords = [
+        "MMSE and logical memory scoring inclusion criteria",
+        "MMSE and logical memory scoring"
+    ]
+    
+    # Loop through and display each group's strategies
+    for population, strategies in recruitment_strategies.items():
+        st.markdown(f"### {population}")
+        for strategy in strategies:
+            st.markdown(f"- {strategy}", unsafe_allow_html=True)
+    
+            # Insert collapsible sources/solutions if MMSE mentioned
+            if any(keyword in strategy for keyword in mmse_keywords):
+                st.markdown("""
+    <details>
+    <summary><strong>Sources</strong></summary>
+    <ul>
+    <li><a href='https://pubmed.ncbi.nlm.nih.gov/34228129/' target='_blank'>PubMed Article</a></li>
+    <li><a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC10171211/' target='_blank'>PMC Article</a></li>
+    </ul>
+    </details>
+    
+    <details>
+    <summary><strong>Solutions</strong></summary>
+    Consider a switch of inclusion/exclusion to Montreal Cognitive Assessment (MoCA).<br>
+    <strong>Sources:</strong> <a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC4562190/' target='_blank'>PMC Article</a>
+    </details>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
 
     combined_data = gender_data + race_data
     seen = set()
